@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/munkireport/munkireport-python2
 """
 Extracts information about SIP, Gatekeeper, and users who have remote access.
 """
