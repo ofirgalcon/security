@@ -22,7 +22,7 @@ class Security_processor extends Processor
         $parser->parse($plist, CFPropertyList::FORMAT_XML);
         $mylist = $parser->toArray();
 
-        $model = Firewall_model::firstOrNew(['serial_number' => $this->serial_number]);
+        $model = Security_model::firstOrNew(['serial_number' => $this->serial_number]);
 
         $model->fill($mylist);
         $model->save();  

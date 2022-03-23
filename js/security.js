@@ -11,7 +11,8 @@ var formatSecurityFileVaultEncrypted = function(colNumber, row){
     var col = $('td:eq('+colNumber+')', row),
         colvar = col.text();
     colvar = colvar == '1' ? '<span class="label label-success">'+i18n.t('encrypted')+'</span>' :
-    (colvar === '0' ? '<span class="label label-danger">'+i18n.t('unencrypted')+'</span>' : colvar)
+    (colvar === '0' ? '<span class="label label-danger">'+i18n.t('unencrypted')+'</span>' : 
+    colvar = '<span class="label label-default">'+i18n.t('unknown')+'</span>')
     col.html(colvar)
 }
 
