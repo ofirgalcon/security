@@ -1,0 +1,25 @@
+i18n_title: security.report
+js_link: module/security/js/security
+table:
+  - column: machine.computer_name
+    i18n_header: listing.computername
+    formatter: clientDetail
+  - column: reportdata.serial_number
+    i18n_header: serial
+  - {i18n_header: username, column: reportdata.long_username}
+  - {i18n_header: security.filevault_users, column: security.filevault_users}
+  - {i18n_header: type, column: machine.machine_name}
+  - {i18n_header: security.filevault_status, column: security.filevault_status, formatter: formatSecurityFileVaultEncrypted}
+  - {i18n_header: security.gatekeeper, column: security.gatekeeper, formatter: formatSecurityGatekeeper}
+  - {i18n_header: security.sip, column: security.sip, formatter: formatSecurityGatekeeper}
+  - {i18n_header: security.firmwarepw, column: security.firmwarepw, formatter: formatSecurityFirmwarePW}
+  - {i18n_header: security.firewall_state, column: security.firewall_state, formatter: formatSecurityFirewall}
+  - {i18n_header: security.skel.kext-loading, column: security.skel_state, formatter: formatSecuritySKEL}
+  - {i18n_header: security.ssh_groups, column: security.ssh_groups}
+  - {i18n_header: security.ssh_users, column: security.ssh_users}
+  - {i18n_header: security.ard_users, column: security.ard_users}
+  - {i18n_header: security.ard_groups, column: security.ard_groups}
+  - {i18n_header: security.root_user, column: security.root_user, formatter: formatSecurityRootUser}
+  - {i18n_header: security.t2_secureboot, column: security.t2_secureboot, formatter: formatSecuritySecureBoot}
+  - {i18n_header: security.t2_externalboot, column: security.t2_externalboot, formatter: formatSecurityExternalBoot}
+  - {i18n_header: security.activation_lock_status, column: security.activation_lock, formatter: formatSecurityActivationLock}

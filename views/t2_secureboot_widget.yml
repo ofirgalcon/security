@@ -1,0 +1,20 @@
+type: button
+widget_id: t2_secureboot-widget
+api_url: /module/security/get_secureboot_stats
+i18n_title: security.t2_secureboot
+listing_link: /show/listing/security/security
+icon: fa-shield
+i18nEmptyResult: no_clients
+buttons:
+  - label: securebootoff
+    i18n_label: off
+    class: btn-danger
+    search_component: SECUREBOOT_OFF
+  - label: securebootmedium
+    i18n_label: on
+    class: btn-warning
+    search_component: SECUREBOOT_MEDIUM
+  - label: securebootfull
+    i18n_label: on
+    class: btn-success
+    search_component: SECUREBOOT_FULL

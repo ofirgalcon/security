@@ -1,0 +1,17 @@
+type: button
+widget_id: firmwarepw-widget
+api_url: /module/security/get_firmwarepw_stats
+i18n_title: security.firmwarepw
+listing_link: /show/listing/security/security
+icon: fa-lock
+i18nEmptyResult: no_clients
+buttons:
+  - label: disabled
+    i18n_label: disabled
+    class: btn-danger
+  - label: enabled
+    i18n_label: enabled
+    class: btn-success
+  - label: notsupported
+    i18n_label: unsupported
+    class: btn-info

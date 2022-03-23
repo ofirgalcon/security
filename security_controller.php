@@ -1,284 +1,239 @@
-<?php
+<?php 
+
 /**
  * Security module class
  *
  * @package munkireport
- * @author
+ * @author tuxudo
  **/
 class Security_controller extends Module_controller
 {
-    
-    /*** Protect methods with auth! ****/
-    public function __construct()
-    {
-        // Store module path
-        $this->module_path = dirname(__FILE__);
-    }
-    /**
-     * Default method
-     *
-     * @author AvB
-     **/
-    public function index()
-    {
-        echo "You've loaded the security module!";
-    }
-    
-    /**
-     * Get security for serial_number
-     *
-     * @param string $serial serial number
-     **/
-    public function get_data($serial = '')
-    {
-        $out = array();
-        if (! $this->authorized()) {
-            $out['error'] = 'Not authorized';
-        } else {
-            $prm = new Security_model;
-            foreach ($prm->retrieve_records($serial) as $security) {
-                $out[] = $security->rs;
-            }
-        }
-        
-        $obj = new View();
-        $obj->view('json', array('msg' => $out));
-    }
 
-    /**
-     * Get Activation Lock statistics
-     *
-     * @return void
-     * @author eholtam
-     **/
-    public function get_activation_lock_stats()
-    {
-        $obj = new View();
-
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }
-                $activation_lock_report = new Security_model;
-
-                $out = array();
-                $out['stats'] = $activation_lock_report->get_activation_lock_stats();
-
-
-        $obj->view('json', array('msg' => $out));
-    }    
-
-
-    /**
-     * Get SIP statistics
-     *
-     * @return void
-     * @author rickheil
-     **/
-    public function get_sip_stats()
-    {
-        $obj = new View();
-
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }
-                $sip_report = new Security_model;
-
-                $out = array();
-                $out['stats'] = $sip_report->get_sip_stats();
-
-
-        $obj->view('json', array('msg' => $out));
-    }    
-
-    /**
-     * Get Gatekeeper statistics
-     *
-     * @return void
-     * @author rickheil
-     **/
-    public function get_gatekeeper_stats()
-    {
-        $obj = new View();
-
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }
-                $sip_report = new Security_model;
-
-                $out = array();
-                $out['stats'] = $sip_report->get_gatekeeper_stats();
-
-
-        $obj->view('json', array('msg' => $out));
-    }
-
-    /**
-     * Get firmware password statistics
-     *
-     * @return void
-     * @author rickheil
-     **/
-    public function get_firmwarepw_stats()
-    {
-        $obj = new View();
-
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }
-                $firmwarepw_report = new Security_model;
-
-                $out = array();
-                $out['stats'] = $firmwarepw_report->get_firmwarepw_stats();
-
-
-        $obj->view('json', array('msg' => $out));
-    }
-
-    /**
-     * Get firewall state statistics
-     *
-     * @return void
-     * @author rickheil
-     **/
-    public function get_firewall_state_stats()
-    {
-	$obj = new View();
-
-	if (! $this->authorized()) {
-		$obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-		return;
+	/*** Protect methods with auth! ****/
+	function __construct()
+	{
+		// Store module path
+		$this->module_path = dirname(__FILE__);
 	}
 
-	$firewall_state_report = new Security_model;
-	$out = array();
-	$out['stats'] = $firewall_state_report->get_firewall_state_stats();
+	/**
+	 * Default method
+	 * @author AvB
+	 *
+	 **/
+	function index()
+	{
+		echo "You've loaded the security module!";
+	}
 
-	$obj->view('json', array('msg' => $out));
-
+    /**
+    * Get Activation Lock statistics data in json format
+    *
+    * @return void
+    * @author eholtam/tuxudo
+    **/
+    public function get_activation_lock_stats()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `activation_lock` = 'activation_lock_enabled' THEN 1 END) AS 'Enabled'")
+                ->selectRaw("COUNT(CASE WHEN `activation_lock` = 'activation_lock_disabled' THEN 1 END) AS 'Disabled'")
+                ->selectRaw("COUNT(CASE WHEN `activation_lock` = 'not_supported' THEN 1 END) AS 'Notsupported'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
     }
 
     /**
-     * Get Secure Kernel Extension Loading ("SKEL") statistics
-     *
-     * @return void
-     * @author rickheil
-     **/
+    * Get SIP statistics data in json format
+    *
+    * @return void
+    * @author rickheil/tuxudo
+    **/
+    public function get_sip_stats()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `sip` = 'Active' THEN 1 END) AS 'Active'")
+                ->selectRaw("COUNT(CASE WHEN `sip` = 'Disabled' THEN 1 END) AS 'Disabled'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
+    /**
+    * Get Gatekeeper statistics data in json format
+    *
+    * @return void
+    * @author rickheil/tuxudo
+    **/
+    public function get_gatekeeper_stats()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `gatekeeper` = 'Active' THEN 1 END) AS 'Active'")
+                ->selectRaw("COUNT(CASE WHEN `gatekeeper` = 'Disabled' THEN 1 END) AS 'Disabled'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
+    /**
+    * Get firmware statistics data in json format
+    *
+    * @return void
+    * @author rickheil/tuxudo
+    **/
+    public function get_firmwarepw_stats()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `firmwarepw` = 'Yes' THEN 1 END) AS 'enabled'")
+                ->selectRaw("COUNT(CASE WHEN `firmwarepw` = 'No' THEN 1 END) AS 'disabled'")
+                ->selectRaw("COUNT(CASE WHEN `firmwarepw` = 'Not Supported' THEN 1 END) AS 'notsupported'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
+    /**
+    * Get firewall state data in json format
+    *
+    * @return void
+    * @author rickheil/tuxudo
+    **/
+    public function get_firewall_state_stats()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `firewall_state` = '2' THEN 1 END) AS 'blockall'")
+                ->selectRaw("COUNT(CASE WHEN `firewall_state` = '1' THEN 1 END) AS 'enabled'")
+                ->selectRaw("COUNT(CASE WHEN `firewall_state` = '0' THEN 1 END) AS 'disabled'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
+    /**
+    * Get Secure Kernel Extension Loading ("SKEL") data in json format
+    *
+    * @return void
+    * @author rickheil/tuxudo
+    **/
     public function get_skel_stats()
     {
-        $obj = new View();
-
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }
-                $skel_report = new Security_model;
-
-                $out = array();
-                $out['stats'] = $skel_report->get_skel_stats();
-
-
-        $obj->view('json', array('msg' => $out));
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `skel_state` = '0' THEN 1 END) AS 'disabled'")
+                ->selectRaw("COUNT(CASE WHEN `skel_state` = '1' THEN 1 END) AS 'enabled'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
     }
 
     /**
-     * Get SSH statistics
-     *
-     * @return void
-     * @author eholtam
-     **/
-
-
+    * Get SSH data in json format
+    *
+    * @return void
+    * @author eholtam/tuxudo
+    **/
     public function get_ssh_stats()
-    {   
-        $obj = new View();
-        
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }       
-                $ssh_report = new Security_model;
-                
-                $out = array(); 
-                $out['stats'] = $ssh_report->get_ssh_stats();
-
-        
-        $obj->view('json', array('msg' => $out));
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `ssh_users` <> 'SSH Disabled' THEN 1 END) AS 'enabled'")
+                ->selectRaw("COUNT(CASE WHEN `ssh_users` = 'SSH Disabled' THEN 1 END) AS 'disabled'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
     }
 
     /**
-     * Get Root User statistics
-     *
-     * @return void
-     * @author rickheil
-     **/
-
-
+    * Get root user data in json format
+    *
+    * @return void
+    * @author rickheil/tuxudo
+    **/
     public function get_root_user_stats()
     {
-        $obj = new View();
-
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }
-                $ssh_report = new Security_model;
-
-                $out = array();
-                $out['stats'] = $ssh_report->get_root_user_stats();
-
-
-        $obj->view('json', array('msg' => $out));
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `root_user` = '0' THEN 1 END) AS 'disabled'")
+                ->selectRaw("COUNT(CASE WHEN `root_user` = '1' THEN 1 END) AS 'enabled'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
     }
 
     /**
-     * Get secure boot statistics
-     *
-     * @return void
-     * @author eholtam
-     **/
+    * Get secure boot data in json format
+    *
+    * @return void
+    * @author eholtam/tuxudo
+    **/
     public function get_secureboot_stats()
     {
-        $obj = new View();
-
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }
-                $secureboot_report = new Security_model;
-
-                $out = array();
-                $out['stats'] = $secureboot_report->get_secureboot_stats();
-
-
-        $obj->view('json', array('msg' => $out));
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `t2_secureboot` = 'SECUREBOOT_FULL' THEN 1 END) AS 'securebootfull'")
+                ->selectRaw("COUNT(CASE WHEN `t2_secureboot` = 'SECUREBOOT_MEDIUM' THEN 1 END) AS 'securebootmedium'")
+                ->selectRaw("COUNT(CASE WHEN `t2_secureboot` = 'SECUREBOOT_OFF' THEN 1 END) AS 'securebootoff'")
+                ->selectRaw("COUNT(CASE WHEN `t2_secureboot` = 'SECUREBOOT_UNKNOWN' THEN 1 END) AS 'securebootunknown'")
+                ->selectRaw("COUNT(CASE WHEN `t2_secureboot` = 'SECUREBOOT_UNSUPPORTED' THEN 1 END) AS 'securebootunsupported'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
     }
 
     /**
-     * Get external boot statistics
-     *
-     * @return void
-     * @author eholtam
-     **/
+    * Get external boot data in json format
+    *
+    * @return void
+    * @author eholtam/tuxudo
+    **/
     public function get_externalboot_stats()
     {
-        $obj = new View();
-
-        if (! $this->authorized()) {
-            $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-            return;
-        }
-                $externalboot_report = new Security_model;
-
-                $out = array();
-                $out['stats'] = $externalboot_report->get_externalboot_stats();
-
-
-        $obj->view('json', array('msg' => $out));
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `t2_externalboot` = 'EXTERNALBOOT_ON' THEN 1 END) AS 'externalbooton'")
+                ->selectRaw("COUNT(CASE WHEN `t2_externalboot` = 'EXTERNALBOOT_OFF' THEN 1 END) AS 'externalbootoff'")
+                ->selectRaw("COUNT(CASE WHEN `t2_externalboot` = 'EXTERNALBOOT_UNKNOWN' THEN 1 END) AS 'externalbootunknown'")
+                ->selectRaw("COUNT(CASE WHEN `t2_externalboot` = 'EXTERNALBOOT_UNSUPPORTED' THEN 1 END) AS 'externalbootunsupported'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
     }
 
+    /**
+    * Get FileVault data in json format
+    *
+    * @return void
+    * @author tuxudo
+    **/
+    public function get_filevault_status()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `filevault_status` = 1 AND `filevault_status` <> '' THEN 1 END) AS 'On'")
+                ->selectRaw("COUNT(CASE WHEN `filevault_status` = 0 AND `filevault_status` <> '' THEN 1 END) AS 'Off'")
+                ->selectRaw("COUNT(CASE WHEN `filevault_status` IS NULL THEN 1 WHEN `filevault_status` = '' THEN 1 END) AS 'Unknown'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
 
-} // END class default_module
+	/**
+     * Retrieve data in json format
+     *
+     **/
+    public function get_data($serial_number)
+    {
+        jsonView(
+            Security_model::select()
+                ->where('security.serial_number', $serial_number)
+                ->filter()
+                ->get()
+                ->toArray()
+        );
+   }
+} // End class Security_controller

@@ -1,0 +1,19 @@
+type: button
+widget_id: filevault_status-widget
+api_url: /module/security/get_filevault_status
+i18n_title: security.filevault_status
+listing_link: /show/listing/security/security
+icon: fa-lock
+i18nEmptyResult: no_clients
+buttons:
+  - label: On
+    i18n_label: encrypted
+    class: btn-danger
+    search_component: filevault_status = 1
+  - label: Off
+    i18n_label: unencrypted
+    class: btn-success
+    search_component: filevault_status = 0
+  - label: Unknown
+    i18n_label: unknown
+    class: btn-info

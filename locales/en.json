@@ -4,6 +4,8 @@
     "activation_lock_status": "Activation Lock Status",
     "block_all": "Block All",
     "firewall_state": "Firewall State",
+    "filevault_status": "FileVault Status",
+    "filevault_users": "FileVault Users",
     "firmwarepw": "Firmware Password",
     "full": "Full",
     "gatekeeper": "Gatekeeper Status",
