@@ -6,11 +6,11 @@ listing_link: /show/listing/security/security
 icon: fa-external-link-square
 i18nEmptyResult: no_clients
 buttons:
-  - label: externalbootoff
-    i18n_label: off
-    class: btn-danger
-    search_component: EXTERNALBOOT_OFF
   - label: externalbooton
     i18n_label: on
-    class: btn-success
+    class: btn-danger
     search_component: EXTERNALBOOT_ON
+  - label: externalbootoff
+    i18n_label: off
+    class: btn-success
+    search_component: EXTERNALBOOT_OFF

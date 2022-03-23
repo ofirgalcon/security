@@ -7,14 +7,14 @@ icon: fa-shield
 i18nEmptyResult: no_clients
 buttons:
   - label: securebootoff
-    i18n_label: off
+    i18n_label: security.off
     class: btn-danger
     search_component: SECUREBOOT_OFF
   - label: securebootmedium
-    i18n_label: on
+    i18n_label: security.medium
     class: btn-warning
     search_component: SECUREBOOT_MEDIUM
   - label: securebootfull
-    i18n_label: on
+    i18n_label: security.full
     class: btn-success
     search_component: SECUREBOOT_FULL

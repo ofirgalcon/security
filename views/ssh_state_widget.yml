@@ -6,10 +6,10 @@ listing_link: /show/listing/security/security
 icon: fa-terminal
 i18nEmptyResult: no_clients
 buttons:
-  - label: disabled
-    i18n_label: disabled
-    class: btn-danger
-    search_component: SSH Disabled
   - label: enabled
     i18n_label: enabled
+    class: btn-danger
+  - label: disabled
+    i18n_label: disabled
     class: btn-success
+    search_component: SSH Disabled
