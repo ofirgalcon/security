@@ -213,9 +213,9 @@ class Security_controller extends Module_controller
     public function get_filevault_status()
     {
         jsonView(
-            Security_model::selectRaw("COUNT(CASE WHEN `filevault_status` = 1 AND `filevault_status` <> '' THEN 1 END) AS 'On'")
-                ->selectRaw("COUNT(CASE WHEN `filevault_status` = 0 AND `filevault_status` <> '' THEN 1 END) AS 'Off'")
-                ->selectRaw("COUNT(CASE WHEN `filevault_status` IS NULL THEN 1 WHEN `filevault_status` = '' THEN 1 END) AS 'Unknown'")
+            Security_model::selectRaw("COUNT(CASE WHEN `filevault_status` = 1 THEN 1 END) AS 'On'")
+                ->selectRaw("COUNT(CASE WHEN `filevault_status` = 0 THEN 1 END) AS 'Off'")
+                ->selectRaw("COUNT(CASE WHEN `filevault_status` IS NULL THEN 1 END) AS 'Unknown'")
                 ->filter()
                 ->first()
                 ->toLabelCount()
