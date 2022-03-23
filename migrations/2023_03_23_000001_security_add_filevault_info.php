@@ -11,8 +11,8 @@ class SecurityAddFilevaultInfo extends Migration
     {
         $capsule = new Capsule();
         $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-          $table->boolean('filevault_status')->default(0)->nullable();
-          $table->string('filevault_users')->default('')->nullable();
+          $table->boolean('filevault_status')->nullable();
+          $table->string('filevault_users')->nullable();
           $table->index('filevault_status');
           $table->index('filevault_users');
           
