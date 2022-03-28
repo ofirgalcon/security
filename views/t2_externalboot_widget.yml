@@ -1,0 +1,16 @@
+type: button
+widget_id: t2_externalboot-widget
+api_url: /module/security/get_externalboot_stats
+i18n_title: security.t2_externalboot
+listing_link: /show/listing/security/security
+icon: fa-external-link-square
+i18nEmptyResult: no_clients
+buttons:
+  - label: externalbooton
+    i18n_label: on
+    class: btn-danger
+    search_component: EXTERNALBOOT_ON
+  - label: externalbootoff
+    i18n_label: off
+    class: btn-success
+    search_component: EXTERNALBOOT_OFF

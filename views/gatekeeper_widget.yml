@@ -1,0 +1,14 @@
+type: button
+widget_id: gatekeeper-widget
+api_url: /module/security/get_gatekeeper_stats
+i18n_title: security.gatekeeper
+listing_link: /show/listing/security/security
+icon: fa-gavel
+i18nEmptyResult: no_clients
+buttons:
+  - label: Disabled
+    i18n_label: disabled
+    class: btn-danger
+  - label: Active
+    i18n_label: enabled
+    class: btn-success
