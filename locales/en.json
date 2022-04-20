@@ -25,7 +25,8 @@
     "skel": {
         "kext-loading": "KEXT Loading",
         "all-approved": "Open",
-        "user-approved": "User Approved"
+        "user-approved": "User Approved",
+        "all-allowed" : "Open"
     },
     "t2_secureboot": "Secure Boot",
     "t2_externalboot": "External Boot",
