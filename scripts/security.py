@@ -409,9 +409,13 @@ def firmware_pw_check():
 
     if float(os.uname()[2][0:2]) >= 14:
         try:
-            sp = subprocess.Popen(['/usr/sbin/firmwarepasswd', '-check'], stdout=subprocess.PIPE)
+            sp = subprocess.Popen(['/usr/sbin/firmwarepasswd', '-check'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = sp.communicate()
-            firmwarepw = out.split()[2]
+
+            if "machine is not supported." in err:
+                return "Not Supported"
+            else:
+                firmwarepw = out.split()[2]
         except OSError as e:
             # firmwarepasswd command not found at the path we specified
             # so set the data to blank and print a warning.
