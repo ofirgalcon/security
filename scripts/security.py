@@ -66,40 +66,34 @@ def t2_chip_check():
 def t2_secureboot_check():
     """ Checks Secure Boot settings from nvram.  T2 chip models only. """
 
-    if t2_chip_check():
-        sp = subprocess.Popen(['/usr/sbin/nvram', '94b73556-2197-4702-82a8-3e1337dafbfb:AppleSecureBootPolicy'], stdout=subprocess.PIPE)
-        out, err = sp.communicate()
-        out_value = out.split("\t")[1].rstrip() 
+    sp = subprocess.Popen(['/usr/sbin/nvram', '94b73556-2197-4702-82a8-3e1337dafbfb:AppleSecureBootPolicy'], stdout=subprocess.PIPE)
+    out, err = sp.communicate()
+    out_value = out.split("\t")[1].rstrip() 
 
-        if "%02" in out_value:
-            secureboot_value = "SECUREBOOT_FULL"
-        elif "%01" in out_value:
-            secureboot_value = "SECUREBOOT_MEDIUM"
-        elif "%00" in out_value:
-            secureboot_value = "SECUREBOOT_OFF"
-        else:
-            secureboot_value = "SECUREBOOT_UNKNOWN"           
+    if "%02" in out_value:
+        secureboot_value = "SECUREBOOT_FULL"
+    elif "%01" in out_value:
+        secureboot_value = "SECUREBOOT_MEDIUM"
+    elif "%00" in out_value:
+        secureboot_value = "SECUREBOOT_OFF"
     else:
-        secureboot_value = "SECUREBOOT_UNSUPPORTED"
+        secureboot_value = "SECUREBOOT_UNKNOWN"           
 
     return secureboot_value
 
 def t2_externalboot_check():
     """ Checks External Boot settings from nvram.  T2 chip models only. """
-
-    if t2_chip_check():
-        sp = subprocess.Popen(['/usr/sbin/nvram', '5eeb160f-45fb-4ce9-b4e3-610359abf6f8:StartupManagerPolicy'], stdout=subprocess.PIPE)
-        out, err = sp.communicate()
-        out_value = out.split("\t")[1].rstrip()
-        
-        if "%03" in out_value:
-            externalboot_value = "EXTERNALBOOT_ON"
-        elif "%00" in out_value:
-            externalboot_value = "EXTERNALBOOT_OFF"
-        else:
-            externalboot_value = "EXTERNALBOOT_UNKNOWN"           
+    
+    sp = subprocess.Popen(['/usr/sbin/nvram', '5eeb160f-45fb-4ce9-b4e3-610359abf6f8:StartupManagerPolicy'], stdout=subprocess.PIPE)
+    out, err = sp.communicate()
+    out_value = out.split("\t")[1].rstrip()
+    
+    if "%03" in out_value:
+        externalboot_value = "EXTERNALBOOT_ON"
+    elif "%00" in out_value:
+        externalboot_value = "EXTERNALBOOT_OFF"
     else:
-        externalboot_value = "EXTERNALBOOT_UNSUPPORTED"
+        externalboot_value = "EXTERNALBOOT_UNKNOWN"           
     
     return externalboot_value
 
@@ -154,7 +148,7 @@ def ssh_user_access_check():
         elif "com.apple.access_ssh" in out:
             # if this group exists, SSH is enabled but only some users are permitted
             # Get a list of users in the com.apple.access_ssh GroupMembership
-            user_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.access_ssh', 'GroupMembership'], stdout=subprocess.PIPE)
+            user_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.access_ssh', 'GroupMembership'], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
             user_out, user_err = user_sp.communicate()
             user_list = user_out.split()
 
@@ -524,8 +518,12 @@ def main():
     result.update({'firewall_state':firewall_enable_check()})
     result.update({'skel_state':skel_state_check()})
     result.update({'root_user':root_enabled_check()})
-    result.update({'t2_secureboot': t2_secureboot_check()})
-    result.update({'t2_externalboot': t2_externalboot_check()})
+    if t2_chip_check():
+        result.update({'t2_secureboot': t2_secureboot_check()})
+        result.update({'t2_externalboot': t2_externalboot_check()})
+    else:
+        result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
+        result.update({'t2_secureboot': "SECUREBOOT_UNSUPPORTED"})
     result.update({'activation_lock': activation_lock_check()})
     result.update(get_filevault_status())
 
