@@ -75,6 +75,17 @@ var formatSecurityExternalBoot = function(colNumber, row){
     col.html(colvar)
 }
 
+var formatASSecurityMode = function(colNumber, row){
+    var col = $('td:eq('+colNumber+')', row),
+        colvar = col.text();
+    colvar = colvar == 'FULL_SECURITY' ? '<span class="label label-success">'+i18n.t('security.full')+'</span>' :
+    colvar = colvar == 'REDUCED_SECURITY' ? '<span class="label label-warning">'+i18n.t('security.reduced')+'</span>' :
+    colvar = colvar == 'PERMISSIVE_SECURITY' ? '<span class="label label-danger">'+i18n.t('security.permissive')+'</span>' :
+    colvar = (colvar == 'SECURITYMODE_UNSUPPORTED' ? '<span class="label label-info">'+i18n.t('security.unsupported')+'</span>' : 
+    colvar = '<span class="label label-default">'+i18n.t('unknown')+'</span>')
+    col.html(colvar)
+}
+
 var formatSecurityActivationLock = function(colNumber, row){
     var col = $('td:eq('+colNumber+')', row),
         colvar = col.text();

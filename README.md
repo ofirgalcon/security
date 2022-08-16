@@ -41,3 +41,4 @@ Database:
 * activation_lock - varchar(255) - Status of Activation lock
 * filevault_status - boolean - FileVault encrypted or unencrypted
 * filevault_users - varchar(255) - FileVault enabled users
+* as_security_mode - varchar(255) - Security Mode, Apple Silicon Macs only

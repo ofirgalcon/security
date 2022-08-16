@@ -32,3 +32,5 @@ widgets:
         view: activation_lock_widget
     security_filevault_status:
         view: security_filevault_status_widget
+    as_security_mode:
+        view: as_security_mode_widget

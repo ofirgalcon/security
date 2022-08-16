@@ -14,3 +14,5 @@ row4:
   t2_secureboot:
   t2_externalboot:
   activation_lock:
+row5:
+  as_security_mode:

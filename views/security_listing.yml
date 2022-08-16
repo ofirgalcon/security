@@ -22,4 +22,5 @@ table:
   - {i18n_header: security.root_user, column: security.root_user, formatter: formatSecurityRootUser}
   - {i18n_header: security.t2_secureboot, column: security.t2_secureboot, formatter: formatSecuritySecureBoot}
   - {i18n_header: security.t2_externalboot, column: security.t2_externalboot, formatter: formatSecurityExternalBoot}
+  - {i18n_header: security.security_mode, column: security.as_security_mode, formatter: formatASSecurityMode}
   - {i18n_header: security.activation_lock_status, column: security.activation_lock, formatter: formatSecurityActivationLock}

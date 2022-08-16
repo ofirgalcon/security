@@ -205,6 +205,26 @@ class Security_controller extends Module_controller
     }
 
     /**
+    * Get security mode data in json format
+    *
+    * @return void
+    * @author tuxudo
+    **/
+    public function get_security_mode_stats()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `as_security_mode` = 'FULL_SECURITY' THEN 1 END) AS 'full'")
+                ->selectRaw("COUNT(CASE WHEN `as_security_mode` = 'REDUCED_SECURITY' THEN 1 END) AS 'reduced'")
+                ->selectRaw("COUNT(CASE WHEN `as_security_mode` = 'PERMISSIVE_SECURITY' THEN 1 END) AS 'permissive'")
+                ->selectRaw("COUNT(CASE WHEN `as_security_mode` = 'UNKNOWN' THEN 1 END) AS 'unknown'")
+                ->selectRaw("COUNT(CASE WHEN `as_security_mode` = 'SECURITYMODE_UNSUPPORTED' THEN 1 END) AS 'unsupported'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
+    /**
     * Get FileVault data in json format
     *
     * @return void

@@ -97,6 +97,26 @@ def t2_externalboot_check():
     
     return externalboot_value
 
+def as_security_mode_check():
+    """ Checks Security Mode settings from nvram.  Apple Silicon Macs only. """
+    
+    sp = subprocess.Popen(['/usr/bin/arch', '-arm64', '/usr/bin/bputil', '--display-policy'], stdout=subprocess.PIPE)
+    out, err = sp.communicate()
+    out_value = out.decode()
+
+    print(out_value)
+    
+    if "Security Mode:               Full" in out_value:
+        security_mode_value = "FULL_SECURITY"
+    elif "Security Mode:               Reduced" in out_value:
+        security_mode_value = "REDUCED_SECURITY"
+    elif "Security Mode:               Permissive" in out_value:
+        security_mode_value = "PERMISSIVE_SECURITY"           
+    else:
+        security_mode_value = "UNKNOWN"           
+    
+    return security_mode_value
+
 def sip_check():
     """ SIP checks. We need to be running 10.11 or newer."""
 
@@ -502,6 +522,13 @@ def get_filevault_status():
 
     return fv_info
 
+def get_cpuarch():
+    try:
+        arch_output = subprocess.check_output(["/usr/bin/arch", "-arm64", "/usr/bin/uname", "-m"], stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError:
+        arch_output = subprocess.check_output(["/usr/bin/uname", "-m"])
+    return arch_output.decode("utf-8").strip()
+
 
 def main():
     """main"""
@@ -519,11 +546,17 @@ def main():
     result.update({'skel_state':skel_state_check()})
     result.update({'root_user':root_enabled_check()})
     if t2_chip_check():
+        result.update({'as_security_mode': "SECURITYMODE_UNSUPPORTED"})
         result.update({'t2_secureboot': t2_secureboot_check()})
         result.update({'t2_externalboot': t2_externalboot_check()})
-    else:
-        result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
+    elif "arm64" in get_cpuarch():
+        result.update({'as_security_mode': as_security_mode_check()})
         result.update({'t2_secureboot': "SECUREBOOT_UNSUPPORTED"})
+        result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
+    else:
+        result.update({'as_security_mode': "SECURITYMODE_UNSUPPORTED"})
+        result.update({'t2_secureboot': "SECUREBOOT_UNSUPPORTED"})
+        result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
     result.update({'activation_lock': activation_lock_check()})
     result.update(get_filevault_status())
 
