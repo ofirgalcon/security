@@ -64,7 +64,7 @@ def t2_chip_check():
         return False
 
 def t2_secureboot_check():
-    """ Checks Secure Boot settings from nvram.  T2 chip models only. """
+    """ Checks Secure Boot settings from nvram. T2 chip models only. """
 
     sp = subprocess.Popen(['/usr/sbin/nvram', '94b73556-2197-4702-82a8-3e1337dafbfb:AppleSecureBootPolicy'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
@@ -82,7 +82,7 @@ def t2_secureboot_check():
     return secureboot_value
 
 def t2_externalboot_check():
-    """ Checks External Boot settings from nvram.  T2 chip models only. """
+    """ Checks External Boot settings from nvram. T2 chip models only. """
     
     sp = subprocess.Popen(['/usr/sbin/nvram', '5eeb160f-45fb-4ce9-b4e3-610359abf6f8:StartupManagerPolicy'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
@@ -98,13 +98,11 @@ def t2_externalboot_check():
     return externalboot_value
 
 def as_security_mode_check():
-    """ Checks Security Mode settings from nvram.  Apple Silicon Macs only. """
+    """ Checks Security Mode settings. Apple Silicon Macs only. """
     
     sp = subprocess.Popen(['/usr/bin/arch', '-arm64', '/usr/bin/bputil', '--display-policy'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
     out_value = out.decode()
-
-    print(out_value)
     
     if "Security Mode:               Full" in out_value:
         security_mode_value = "FULL_SECURITY"
