@@ -416,7 +416,13 @@ def firmware_pw_check():
     The command firmwarepassword appeared in 10.10, so we use nvram for older versions.
     Thank you @steffan for this check."""
     # Firmware passwords not supported on Apple Silicon - return No if we are running it
-    out = reportcommon.get_cpuarch()
+    try:
+        arch_output = subprocess.check_output(["/usr/bin/arch", "-arm64", "/usr/bin/uname", "-m"], stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError:
+        arch_output = subprocess.check_output(["/usr/bin/uname", "-m"])
+    
+    out = arch_output.decode("utf-8").strip()
+
     if 'arm64' in out:
         return "Not Supported"
 
