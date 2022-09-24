@@ -12,6 +12,8 @@ sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
 
 from munkilib import FoundationPlist
+from munkilib import reportcommon
+
 from Foundation import CFPreferencesCopyAppValue
 
 # Disable PyLint complaining about 'invalid' names and lines too long
