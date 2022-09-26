@@ -12,6 +12,7 @@ sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
 
 from munkilib import FoundationPlist
+
 from Foundation import CFPreferencesCopyAppValue
 
 # Disable PyLint complaining about 'invalid' names and lines too long
@@ -414,9 +415,8 @@ def firmware_pw_check():
     The command firmwarepassword appeared in 10.10, so we use nvram for older versions.
     Thank you @steffan for this check."""
     # Firmware passwords not supported on Apple Silicon - return No if we are running it
-    sp = subprocess.Popen(['/usr/bin/arch'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = sp.communicate()
-    if 'arm64' in out:
+
+    if "arm64" in os.uname()[3].lower():
         return "Not Supported"
 
     if float(os.uname()[2][0:2]) >= 14:
