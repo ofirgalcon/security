@@ -21,3 +21,24 @@ For the application firewall state, there are three possible values:
 For the user-approved kernel extension loading state, there are two possible values:
 * User Approved = 0 - Machines with UAKEL/SKEL turned on in the default state (security.skel.user-approved)
 * Open = 1 - Pre-10.13 machines or machines where UAKEL/SKEL is in disabled state (security.skel.all-approved)
+
+Table Schema
+-----
+
+Database:
+* gatekeeper - varchar(255) - Status of Gatekeeper
+* sip - varchar(255) - Status of SIP
+* ssh_groups - varchar(255) - SSH enabled groups
+* ssh_users - varchar(255) - SSH enabled users
+* ard_groups - varchar(255) - Apple Remote Desktop enabled groups
+* root_user - varchar(255) - Status of root user account
+* ard_users - varchar(255) - Apple Remote Desktop enabled users
+* firmwarepw - varchar(255) - Status of firmware password
+* firewall_state - varchar(255) - Status of firewall
+* skel_state - varchar(255) - SKEL state
+* t2_secureboot - varchar(255) - State of SecureBoot
+* t2_externalboot - varchar(255) - State of External Boot
+* activation_lock - varchar(255) - Status of Activation lock
+* filevault_status - boolean - FileVault encrypted or unencrypted
+* filevault_users - varchar(255) - FileVault enabled users
+* as_security_mode - varchar(255) - Security Mode, Apple Silicon Macs only

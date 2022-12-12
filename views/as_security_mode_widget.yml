@@ -1,0 +1,20 @@
+type: button
+widget_id: as_securit_mode-widget
+api_url: /module/security/get_security_mode_stats
+i18n_title: security.security_mode
+listing_link: /show/listing/security/security
+icon: fa-shield
+i18nEmptyResult: no_clients
+buttons:
+  - label: permissive
+    i18n_label: security.permissive
+    class: btn-danger
+    search_component: PERMISSIVE_SECURITY
+  - label: reduced
+    i18n_label: security.reduced
+    class: btn-warning
+    search_component: REDUCED_SECURITY
+  - label: full
+    i18n_label: security.full
+    class: btn-success
+    search_component: FULL_SECURITY

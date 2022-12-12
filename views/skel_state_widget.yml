@@ -1,0 +1,16 @@
+type: button
+widget_id: skel-widget
+api_url: /module/security/get_skel_stats
+i18n_title: security.skel.kext-loading
+listing_link: /show/listing/security/security
+icon: fa-puzzle-piece
+i18nEmptyResult: no_clients
+buttons:
+  - label: disabled
+    i18n_label: security.skel.all-approved
+    class: btn-info
+    search_component: skel_state = 0
+  - label: enabled
+    i18n_label: security.skel.user-approved
+    class: btn-info
+    search_component: skel_state = 1

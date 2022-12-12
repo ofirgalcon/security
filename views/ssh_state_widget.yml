@@ -1,0 +1,15 @@
+type: button
+widget_id: ssh-widget
+api_url: /module/security/get_ssh_stats
+i18n_title: security.ssh_state
+listing_link: /show/listing/security/security
+icon: fa-terminal
+i18nEmptyResult: no_clients
+buttons:
+  - label: enabled
+    i18n_label: enabled
+    class: btn-danger
+  - label: disabled
+    i18n_label: disabled
+    class: btn-success
+    search_component: SSH Disabled

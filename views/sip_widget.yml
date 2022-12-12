@@ -1,0 +1,14 @@
+type: button
+widget_id: sip-widget
+api_url: /module/security/get_sip_stats
+i18n_title: security.sip_status
+listing_link: /show/listing/security/security
+icon: fa-shield
+i18nEmptyResult: no_clients
+buttons:
+  - label: Disabled
+    i18n_label: security.sip_disabled
+    class: btn-danger
+  - label: Active
+    i18n_label: security.sip_active
+    class: btn-success

@@ -1,0 +1,16 @@
+type: button
+widget_id: root_user-widget
+api_url: /module/security/get_root_user_stats
+i18n_title: security.root_user_status
+listing_link: /show/listing/security/security
+icon: fa-user-circle
+i18nEmptyResult: no_clients
+buttons:
+  - label: enabled
+    i18n_label: enabled
+    class: btn-danger
+    search_component: root_user = 1
+  - label: disabled
+    i18n_label: disabled
+    class: btn-success
+    search_component: root_user = 0

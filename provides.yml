@@ -1,0 +1,36 @@
+detail_widgets:
+    security_detail:
+        view: security_detail_widget
+listings:
+    security:
+        view: security_listing
+        i18n: security.security
+reports:
+    security:
+        view: security
+        i18n: security.report
+widgets:
+    firmwarepw:
+        view: firmwarepw_widget
+    gatekeeper:
+        view: gatekeeper_widget
+    sip:
+        view: sip_widget
+    firewall_state:
+        view: firewall_state_widget
+    skel_state:
+        view: skel_state_widget
+    root_user:
+        view: root_user_widget
+    ssh_state:
+        view: ssh_state_widget
+    t2_externalboot:
+        view: t2_externalboot_widget
+    t2_secureboot:
+        view: t2_secureboot_widget
+    activation_lock:
+        view: activation_lock_widget
+    security_filevault_status:
+        view: security_filevault_status_widget
+    as_security_mode:
+        view: as_security_mode_widget

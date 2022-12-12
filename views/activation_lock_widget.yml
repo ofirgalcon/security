@@ -1,0 +1,20 @@
+type: button
+widget_id: activation_lock-widget
+api_url: /module/security/get_activation_lock_stats
+i18n_title: security.activation_lock_status
+listing_link: /show/listing/security/security
+icon: fa-lock
+i18nEmptyResult: no_clients
+buttons:
+  - label: Enabled
+    i18n_label: enabled
+    class: btn-danger
+    search_component: activation_lock_enabled
+  - label: Disabled
+    i18n_label: disabled
+    class: btn-success
+    search_component: activation_lock_disabled
+  - label: Notsupported
+    i18n_label: security.unsupported
+    class: btn-info
+    search_component: not_suppported

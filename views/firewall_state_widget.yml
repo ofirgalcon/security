@@ -1,0 +1,20 @@
+type: button
+widget_id: firewall_state-widget
+api_url: /module/security/get_firewall_state_stats
+i18n_title: security.firewall_state
+listing_link: /show/listing/security/security
+icon: fa-fire
+i18nEmptyResult: no_clients
+buttons:
+  - label: disabled
+    i18n_label: disabled
+    class: btn-danger
+    search_component: firewall = 0
+  - label: enabled
+    i18n_label: enabled
+    class: btn-success
+    search_component: firewall = 1
+  - label: blockall
+    i18n_label: security.block_all
+    class: btn-info
+    search_component: firewall = 2
