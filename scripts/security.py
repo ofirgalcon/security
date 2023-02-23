@@ -222,7 +222,12 @@ def ssh_group_access_check():
                 for group_uuid in group_list_uuid[1:]:
                     group_id_sp = subprocess.Popen(['/usr/bin/dsmemberutil', 'getid', '-x', group_uuid], stdout=subprocess.PIPE)
                     group_id_out, group_id_err = group_id_sp.communicate()
-                    group_list.append(grp.getgrgid(group_id_out.split()[1]).gr_name)
+                    if group_id_sp.returncode == 0:
+                        group_id_out_2 = int(group_id_out.decode().split()[1])
+                        group_name = grp.getgrgid(group_id_out_2).gr_name
+                        if group_name not in group_list:
+                            group_list.append(group_name)
+
             except IndexError:
                 pass
                 
