@@ -349,7 +349,7 @@ def ard_group_access_check():
                             for group_uuid in group_list_uuid[1:]:
                                 group_id_sp = subprocess.Popen(['/usr/bin/dsmemberutil', 'getid', '-x', group_uuid], stdout=subprocess.PIPE)
                                 group_id_out, group_id_err = group_id_sp.communicate()
-                                group_name = grp.getgrgid(group_id_out.decode().split()[1]).gr_name
+                                group_name = grp.getgrgid(int(group_id_out.decode().split()[1])).gr_name
                                 if group_name not in group_list:
                                     group_list.append(group_name)
                         except IndexError:
@@ -376,8 +376,8 @@ def ard_group_access_check():
                                 group_id_sp = subprocess.Popen(['/usr/bin/dsmemberutil', 'getid', '-x', group_uuid], stdout=subprocess.PIPE)
                                 group_id_out, group_id_err = group_id_sp.communicate()
                                 if group_id_sp.returncode == 0:
-                                    ard_group = grp.getgrgid(group_id_out.decode().split()[1]).gr_name
-                                    group_name = grp.getgrgid(group_id_out.decode().split()[1]).gr_name
+                                    ard_group = grp.getgrgid(int(group_id_out.decode().split()[1])).gr_name
+                                    group_name = grp.getgrgid(int(group_id_out.decode().split()[1])).gr_name
                                     if group_name not in group_list:
                                         group_list.append(group_name)
                         except IndexError:
@@ -404,7 +404,7 @@ def ard_group_access_check():
                                 group_id_sp = subprocess.Popen(['/usr/bin/dsmemberutil', 'getid', '-x', group_uuid], stdout=subprocess.PIPE)
                                 group_id_out, group_id_err = group_id_sp.communicate()
                                 if group_id_sp.returncode == 0:
-                                    group_name = grp.getgrgid(group_id_out.decode().split()[1]).gr_name
+                                    group_name = grp.getgrgid(int(group_id_out.decode().split()[1])).gr_name
                                     if group_name not in group_list:
                                         group_list.append(group_name)
                         except IndexError:
