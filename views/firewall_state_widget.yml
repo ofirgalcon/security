@@ -9,12 +9,12 @@ buttons:
   - label: disabled
     i18n_label: disabled
     class: btn-danger
-    search_component: firewall = 0
+    search_component: firewall_off
   - label: enabled
     i18n_label: enabled
     class: btn-success
-    search_component: firewall = 1
+    search_component: firewall_on
   - label: blockall
     i18n_label: security.block_all
     class: btn-info
-    search_component: firewall = 2
+    search_component: firewall_stealth

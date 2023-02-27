@@ -9,6 +9,8 @@ buttons:
   - label: Disabled
     i18n_label: security.sip_disabled
     class: btn-danger
+    search_component: sip_off
   - label: Active
     i18n_label: security.sip_active
     class: btn-success
+    search_component: sip_on
