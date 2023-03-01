@@ -105,7 +105,7 @@ def t2_externalboot_check():
 def as_security_mode_check():
     """ Checks Security Mode settings. Apple Silicon Macs only. """
     
-    sp = subprocess.Popen(['/usr/bin/arch', '-arm64', '/usr/bin/bputil', '--display-policy'], stdout=subprocess.PIPE)
+    sp = subprocess.Popen(['/usr/bin/bputil', '--display-policy'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
     out_value = out.decode()
     
