@@ -95,3 +95,103 @@ var formatSecurityActivationLock = function(colNumber, row){
     colvar = '<span class="label label-default">'+i18n.t('unknown')+'</span>')
     col.html(colvar)
 }
+
+// Filters
+
+var fv_state = function(colNumber, d){
+    // Look for 'Enabled' keyword
+    if(d.search.value.match(/^filevault_off$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '!= 1';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for 'Disabled' keyword
+    if(d.search.value.match(/^filevault_on$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 1';
+        // Clear global search
+        d.search.value = '';
+    }
+}
+
+var gatekeeper_state = function(colNumber, d){
+    // Look for 'Enabled' keyword
+    if(d.search.value.match(/^gatekeepr_off$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = 'Disabled';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for 'Disabled' keyword
+    if(d.search.value.match(/^gatekeepr_on$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = 'Active';
+        // Clear global search
+        d.search.value = '';
+    }
+}
+
+var sip_state = function(colNumber, d){
+    // Look for 'Enabled' keyword
+    if(d.search.value.match(/^sip_off$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = 'Disabled';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for 'Disabled' keyword
+    if(d.search.value.match(/^sip_on$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = 'Active';
+        // Clear global search
+        d.search.value = '';
+    }
+    
+    // Look for 'Disabled' keyword
+    if(d.search.value.match(/^sip_no_support$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = 'Not Supported';
+        // Clear global search
+        d.search.value = '';
+    }
+}
+
+var firewall_state = function(colNumber, d){
+    // Look for 'Enabled' keyword
+    if(d.search.value.match(/^firewall_off$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 0';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for 'Disabled' keyword
+    if(d.search.value.match(/^firewall_on$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 1';
+        // Clear global search
+        d.search.value = '';
+    }
+    
+    // Look for 'Disabled' keyword
+    if(d.search.value.match(/^firewall_stealth$/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 2';
+        // Clear global search
+        d.search.value = '';
+    }
+}

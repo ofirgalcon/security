@@ -9,6 +9,9 @@ buttons:
   - label: Disabled
     i18n_label: disabled
     class: btn-danger
+    search_component: gatekeepr_off
   - label: Active
     i18n_label: enabled
     class: btn-success
+    search_component: gatekeepr_on
+    

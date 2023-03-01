@@ -9,11 +9,11 @@ buttons:
   - label: Off
     i18n_label: unencrypted
     class: btn-danger
-    search_component: filevault_status = 0
+    search_component: filevault_off
   - label: On
     i18n_label: encrypted
     class: btn-success
-    search_component: filevault_status = 1
+    search_component: filevault_on
   - label: Unknown
     i18n_label: unknown
     class: btn-info
