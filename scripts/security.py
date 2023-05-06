@@ -100,13 +100,9 @@ def t2_externalboot_check():
     
     return externalboot_value
 
-def as_security_mode_check():
+def as_security_mode_check(out_value):
     """ Checks Security Mode settings. Apple Silicon Macs only. """
-    
-    sp = subprocess.Popen(['/usr/bin/bputil', '--display-policy'], stdout=subprocess.PIPE)
-    out, err = sp.communicate()
-    out_value = out.decode()
-    
+
     if "Security Mode:               Full" in out_value:
         security_mode_value = "FULL_SECURITY"
     elif "Security Mode:               Reduced" in out_value:
@@ -115,8 +111,44 @@ def as_security_mode_check():
         security_mode_value = "PERMISSIVE_SECURITY"           
     else:
         security_mode_value = "UNKNOWN"           
-    
+
     return security_mode_value
+
+def as_user_mdm_control(out_value):
+    """ Checks user allowed MDM Control settings. Apple Silicon Macs only. """
+
+    if "User-allowed MDM Control:    Enabled" in out_value:
+        user_mdm_control_value = "Enabled"
+    elif "User-allowed MDM Control:    Disabled" in out_value:
+        user_mdm_control_value = "Disabled"
+    else:
+        user_mdm_control_value = "UNKNOWN"           
+
+    return user_mdm_control_value
+
+def as_dep_mdm_control(out_value):
+    """ Checks DEP allowed MDM Control settings. Apple Silicon Macs only. """
+
+    if "DEP-allowed MDM Control:     Enabled" in out_value:
+        dep_mdm_control_value = "Enabled"
+    elif "DEP-allowed MDM Control:     Disabled" in out_value:
+        dep_mdm_control_value = "Disabled"
+    else:
+        dep_mdm_control_value = "UNKNOWN"           
+
+    return dep_mdm_control_value
+
+def as_third_party_kexts(out_value):
+    """ Checks 3rd party kext settings. Apple Silicon Macs only. """
+
+    if "3rd Party Kexts Status:      Enabled" in out_value:
+        third_party_kexts_value = "Enabled"
+    elif "3rd Party Kexts Status:      Disabled" in out_value:
+        third_party_kexts_value = "Disabled"
+    else:
+        third_party_kexts_value = "UNKNOWN"           
+
+    return third_party_kexts_value
 
 def sip_check():
     """ SIP checks. We need to be running 10.11 or newer."""
@@ -228,7 +260,7 @@ def ssh_group_access_check():
 
             except IndexError:
                 pass
-                
+
             return ', '.join(item for item in group_list)
 
         else:
@@ -409,7 +441,7 @@ def ard_group_access_check():
                             pass
                     except:
                         pass
-                        
+
             return ', '.join(item for item in group_list)
 
 #            return group_list
@@ -513,14 +545,14 @@ def get_filevault_status():
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (output, unused_error) = proc.communicate()
-        
+
         fv_users = []
-        
+
         for fv_user in output.decode().split('\n'):
             fv_users.append(fv_user.split(',')[0])
-        
+
         del fv_users[-1]
-        
+
         fv_info['filevault_users'] = ', '.join(fv_users)
     else:
         fv_info['filevault_users'] = ""
@@ -545,14 +577,28 @@ def main():
     result.update({'root_user':root_enabled_check()})
     if t2_chip_check():
         result.update({'as_security_mode': "SECURITYMODE_UNSUPPORTED"})
+        result.update({'as_third_party_kexts': "UNSUPPORTED"})
+        result.update({'as_user_mdm_control': "UNSUPPORTED"})
+        result.update({'as_dep_mdm_control': "UNSUPPORTED"})
         result.update({'t2_secureboot': t2_secureboot_check()})
         result.update({'t2_externalboot': t2_externalboot_check()})
     elif "arm" in os.uname()[3].lower():
-        result.update({'as_security_mode': as_security_mode_check()})
+
+        sp = subprocess.Popen(['/usr/bin/bputil', '--display-policy'], stdout=subprocess.PIPE)
+        out, err = sp.communicate()
+        out_value = out.decode()
+
+        result.update({'as_security_mode': as_security_mode_check(out_value)})
+        result.update({'as_third_party_kexts': as_third_party_kexts(out_value)})
+        result.update({'as_user_mdm_control': as_user_mdm_control(out_value)})
+        result.update({'as_dep_mdm_control': as_dep_mdm_control(out_value)})
         result.update({'t2_secureboot': "SECUREBOOT_UNSUPPORTED"})
         result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
     else:
         result.update({'as_security_mode': "SECURITYMODE_UNSUPPORTED"})
+        result.update({'as_third_party_kexts': "UNSUPPORTED"})
+        result.update({'as_user_mdm_control': "UNSUPPORTED"})
+        result.update({'as_dep_mdm_control': "UNSUPPORTED"})
         result.update({'t2_secureboot': "SECUREBOOT_UNSUPPORTED"})
         result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
     result.update({'activation_lock': activation_lock_check()})

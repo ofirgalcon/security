@@ -24,3 +24,6 @@ table:
   - {i18n_header: security.t2_externalboot, column: security.t2_externalboot, formatter: formatSecurityExternalBoot}
   - {i18n_header: security.security_mode, column: security.as_security_mode, formatter: formatASSecurityMode}
   - {i18n_header: security.activation_lock_status, column: security.activation_lock, formatter: formatSecurityActivationLock}
+  - {i18n_header: security.third_party_kexts, column: security.as_third_party_kexts, formatter: formatSecurityThirdPartyKexts}
+  - {i18n_header: security.user_mdm_control, column: security.as_user_mdm_control, formatter: formatSecurityThirdPartyKexts}
+  - {i18n_header: security.dep_mdm_control, column: security.as_dep_mdm_control, formatter: formatSecurityThirdPartyKexts}

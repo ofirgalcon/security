@@ -4,9 +4,9 @@ use munkireport\models\MRModel as Eloquent;
 
 class Security_model extends Eloquent
 {
-    protected $table = 'security';
+	protected $table = 'security';
 
-    protected $fillable = [
+	protected $fillable = [
 		'serial_number',
 		'gatekeeper',
 		'sip',
@@ -24,7 +24,10 @@ class Security_model extends Eloquent
 		'as_security_mode',
 		'filevault_status',
 		'filevault_users',
-    ];
+		'as_third_party_kexts',
+		'as_user_mdm_control',
+		'as_dep_mdm_control',
+	];
 
-    public $timestamps = false;
+	public $timestamps = false;
 }

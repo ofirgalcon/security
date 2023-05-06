@@ -1,0 +1,16 @@
+type: button
+widget_id: user_mdm_control-widget
+api_url: /module/security/get_user_mdm_control
+i18n_title: security.user_mdm_control
+listing_link: /show/listing/security/security
+icon: fa-user
+i18nEmptyResult: no_clients
+buttons:
+  - label: Disabled
+    i18n_label: disabled
+    class: btn-danger
+    search_component: user_mdm_control = Disabled
+  - label: Enabled
+    i18n_label: enabled
+    class: btn-success
+    search_component: user_mdm_control = Enabled

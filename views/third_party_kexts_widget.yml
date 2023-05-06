@@ -1,0 +1,16 @@
+type: button
+widget_id: third_party_kexts-widget
+api_url: /module/security/get_third_party_kexts
+i18n_title: security.third_party_kexts
+listing_link: /show/listing/security/security
+icon: fa-puzzle-piece
+i18nEmptyResult: no_clients
+buttons:
+  - label: Enabled
+    i18n_label: enabled
+    class: btn-danger
+    search_component: third_party_kexts = Enabled
+  - label: Disabled
+    i18n_label: disabled
+    class: btn-success
+    search_component: third_party_kexts = Disabled

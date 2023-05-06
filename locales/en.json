@@ -3,6 +3,7 @@
     "ard_users": "ARD Users",
     "activation_lock_status": "Activation Lock Status",
     "block_all": "Block All",
+    "dep_mdm_control": "DEP Allowed MDM Control",
     "firewall_state": "Firewall State",
     "filevault_status": "FileVault Status",
     "filevault_users": "FileVault Users",
@@ -36,6 +37,8 @@
     },
     "t2_secureboot": "Secure Boot",
     "t2_externalboot": "External Boot",
+    "third_party_kexts": "3rd Party Kexts",
     "unknown": "Unknown",
-    "unsupported": "Unsupported"
+    "unsupported": "Unsupported",
+    "user_mdm_control": "User Allowed MDM Control"
 }

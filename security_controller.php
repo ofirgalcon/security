@@ -242,6 +242,60 @@ class Security_controller extends Module_controller
         );
     }
 
+    /**
+    * Get 3rd party kexts data in json format
+    *
+    * @return void
+    * @author tuxudo
+    **/
+    public function get_third_party_kexts()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `as_third_party_kexts` = 'Enabled' THEN 1 END) AS 'Enabled'")
+                ->selectRaw("COUNT(CASE WHEN `as_third_party_kexts` = 'Disabled' THEN 1 END) AS 'Disabled'")
+                ->selectRaw("COUNT(CASE WHEN `as_third_party_kexts` = 'UNKNOWN' THEN 1 END) AS 'Unknown'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
+    /**
+    * Get user allowed MDM control data in json format
+    *
+    * @return void
+    * @author tuxudo
+    **/
+    public function get_user_mdm_control()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `as_user_mdm_control` = 'Enabled' THEN 1 END) AS 'Enabled'")
+                ->selectRaw("COUNT(CASE WHEN `as_user_mdm_control` = 'Disabled' THEN 1 END) AS 'Disabled'")
+                ->selectRaw("COUNT(CASE WHEN `as_user_mdm_control` = 'UNKNOWN' THEN 1 END) AS 'Unknown'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
+    /**
+    * Get DEP allowed MDM control data in json format
+    *
+    * @return void
+    * @author tuxudo
+    **/
+    public function get_dep_mdm_control()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `as_dep_mdm_control` = 'Enabled' THEN 1 END) AS 'Enabled'")
+                ->selectRaw("COUNT(CASE WHEN `as_dep_mdm_control` = 'Disabled' THEN 1 END) AS 'Disabled'")
+                ->selectRaw("COUNT(CASE WHEN `as_dep_mdm_control` = 'UNKNOWN' THEN 1 END) AS 'Unknown'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
 	/**
      * Retrieve data in json format
      *

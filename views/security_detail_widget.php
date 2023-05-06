@@ -108,6 +108,60 @@ $(document).on('appReady', function(){
                            })))
                     .append($('<tr>')
                         .append($('<th>')
+                            .text(i18n.t('security.third_party_kexts')))
+                        .append($('<td>')
+                            .text(function(){
+                                if(item.as_third_party_kexts == 'Enabled'){
+                                    return i18n.t('enabled');
+                                }
+                                if(item.as_third_party_kexts == 'Disabled'){
+                                    return i18n.t('disabled');
+                                }
+                                if(item.as_third_party_kexts == 'UNKNOWN'){
+                                    return i18n.t('security.unknown');
+                                }
+                                if(item.as_third_party_kexts == 'UNSUPPORTED'){
+                                    return i18n.t('security.unsupported');
+                                }
+                           })))
+                    .append($('<tr>')
+                        .append($('<th>')
+                            .text(i18n.t('security.user_mdm_control')))
+                        .append($('<td>')
+                            .text(function(){
+                                if(item.as_user_mdm_control == 'Enabled'){
+                                    return i18n.t('enabled');
+                                }
+                                if(item.as_user_mdm_control == 'Disabled'){
+                                    return i18n.t('disabled');
+                                }
+                                if(item.as_user_mdm_control == 'UNKNOWN'){
+                                    return i18n.t('security.unknown');
+                                }
+                                if(item.as_user_mdm_control == 'UNSUPPORTED'){
+                                    return i18n.t('security.unsupported');
+                                }
+                           })))
+                    .append($('<tr>')
+                        .append($('<th>')
+                            .text(i18n.t('security.dep_mdm_control')))
+                        .append($('<td>')
+                            .text(function(){
+                                if(item.as_dep_mdm_control == 'Enabled'){
+                                    return i18n.t('enabled');
+                                }
+                                if(item.as_dep_mdm_control == 'Disabled'){
+                                    return i18n.t('disabled');
+                                }
+                                if(item.as_dep_mdm_control == 'UNKNOWN'){
+                                    return i18n.t('security.unknown');
+                                }
+                                if(item.as_dep_mdm_control == 'UNSUPPORTED'){
+                                    return i18n.t('security.unsupported');
+                                }
+                           })))
+                    .append($('<tr>')
+                        .append($('<th>')
                             .text(i18n.t('security.activation_lock_status')))
                         .append($('<td class="mr-activation_lock">')
                             .text(function(){
@@ -121,21 +175,18 @@ $(document).on('appReady', function(){
                                     return i18n.t('unsupported');
                                 }
                             }))))
-                        
+
             // Firewall
             var fw_states = [i18n.t('disabled'), i18n.t('enabled'), i18n.t('security.block_all')]
             var firewall_state = parseInt(item.firewall_state);
             $('.mr-firewall_state').text(fw_states[firewall_state] || i18n.t('unknown'));
-                       
+
             // SKEL status
             var skel_states = [i18n.t('security.skel.all-allowed'), i18n.t('security.skel.user-approved')]
             var skel_state = parseInt(item.skel_state);
             $('.mr-skel_state').text(skel_states[skel_state] || i18n.t('unknown'));
 
         });
-        
-
     });
 });
 </script>
-

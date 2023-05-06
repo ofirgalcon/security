@@ -86,6 +86,16 @@ var formatASSecurityMode = function(colNumber, row){
     col.html(colvar)
 }
 
+var formatSecurityThirdPartyKexts = function(colNumber, row){
+    var col = $('td:eq('+colNumber+')', row),
+        colvar = col.text();
+    colvar = colvar == 'Enabled' ? '<span class="label label-warning">'+i18n.t('enabled')+'</span>' :
+    colvar = colvar == 'Disabled' ? '<span class="label label-success">'+i18n.t('disabled')+'</span>' :
+    colvar = (colvar == 'UNSUPPORTED' ? '<span class="label label-info">'+i18n.t('security.unsupported')+'</span>' : 
+    colvar = '<span class="label label-default">'+i18n.t('unknown')+'</span>')
+    col.html(colvar)
+}
+
 var formatSecurityActivationLock = function(colNumber, row){
     var col = $('td:eq('+colNumber+')', row),
         colvar = col.text();

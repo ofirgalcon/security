@@ -16,3 +16,7 @@ row4:
   activation_lock:
 row5:
   as_security_mode:
+  user_mdm_control:
+  dep_mdm_control:
+row6:
+  third_party_kexts:

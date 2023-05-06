@@ -34,3 +34,9 @@ widgets:
         view: security_filevault_status_widget
     as_security_mode:
         view: as_security_mode_widget
+    third_party_kexts:
+        view: third_party_kexts_widget
+    user_mdm_control:
+        view: user_mdm_control_widget
+    dep_mdm_control:
+        view: dep_mdm_control_widget

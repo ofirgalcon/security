@@ -1,0 +1,16 @@
+type: button
+widget_id: dep_mdm_control-widget
+api_url: /module/security/get_dep_mdm_control
+i18n_title: security.dep_mdm_control
+listing_link: /show/listing/security/security
+icon: fa-dot-circle-o
+i18nEmptyResult: no_clients
+buttons:
+  - label: Disabled
+    i18n_label: disabled
+    class: btn-danger
+    search_component: dep_mdm_control = Disabled
+  - label: Enabled
+    i18n_label: enabled
+    class: btn-success
+    search_component: dep_mdm_control = Enabled

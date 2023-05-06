@@ -42,3 +42,7 @@ Database:
 * filevault_status - boolean - FileVault encrypted or unencrypted
 * filevault_users - varchar(255) - FileVault enabled users
 * as_security_mode - varchar(255) - Security Mode, Apple Silicon Macs only
+* as_third_party_kexts - varchar(255) - 3rd party kexts allowed, Apple Silicon Macs only
+* as_user_mdm_control - varchar(255) - User allowed MDM control, Apple Silicon Macs only
+* as_dep_mdm_control - varchar(255) - DEP allowed MDM control, Apple Silicon Macs only
+
