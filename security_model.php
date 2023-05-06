@@ -21,6 +21,7 @@ class Security_model extends Eloquent
 		't2_secureboot',
 		't2_externalboot',
 		'activation_lock',
+		'as_security_mode',
 		'filevault_status',
 		'filevault_users',
     ];
