@@ -7,6 +7,7 @@ import os
 import sys
 import subprocess
 import grp
+import plistlib
 
 sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
@@ -42,10 +43,7 @@ def activation_lock_check():
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (output, unused_error) = proc.communicate()
 
-        try:
-            plist = plistlib.readPlistFromString(output.decode())
-        except AttributeError as e:
-            plist = plistlib.loads(output.decode())
+        plist = FoundationPlist.readPlistFromString(output)
             
         # system_profiler xml is an array
         sp_dict = plist[0]
@@ -53,8 +51,8 @@ def activation_lock_check():
         for item in items:
             for key in item:
                 if key == "activation_lock_status":
-                     return item[key]
-            return "not_supported" 
+                    return item[key]
+            return "not_supported"
     except Exception:
         return "not_supported"
 
