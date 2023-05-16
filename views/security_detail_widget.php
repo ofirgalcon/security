@@ -102,7 +102,7 @@ $(document).on('appReady', function(){
                                 if(item.as_security_mode == 'PERMISSIVE_SECURITY'){
                                     return i18n.t('security.permissive');
                                 }
-                                if(item.as_security_mode == 'EXTERNALBOOT_UNSUPPORTED'){
+                                if(item.as_security_mode == 'SECURITYMODE_UNSUPPORTED'){
                                     return i18n.t('security.unsupported');
                                 }
                            })))
