@@ -106,6 +106,16 @@ var formatSecurityActivationLock = function(colNumber, row){
     col.html(colvar)
 }
 
+var formatSecuritytimestampToMoment =  function(colNumber, row){
+    var col = $('td:eq('+colNumber+')', row),
+        colvar = col.text();
+        console.log(colvar)
+    if (colvar > 0){
+        var date = new Date(parseInt(colvar) * 1000);
+        col.html('<span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span>')
+    }
+}
+
 // Filters
 
 var fv_state = function(colNumber, d){

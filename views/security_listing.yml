@@ -19,6 +19,7 @@ table:
   - {i18n_header: security.ssh_users, column: security.ssh_users}
   - {i18n_header: security.ard_users, column: security.ard_users}
   - {i18n_header: security.ard_groups, column: security.ard_groups}
+  - {i18n_header: security.apple_setup_timestamp, column: security.apple_setup_timestamp, formatter: formatSecuritytimestampToMoment}
   - {i18n_header: security.root_user, column: security.root_user, formatter: formatSecurityRootUser}
   - {i18n_header: security.t2_secureboot, column: security.t2_secureboot, formatter: formatSecuritySecureBoot}
   - {i18n_header: security.t2_externalboot, column: security.t2_externalboot, formatter: formatSecurityExternalBoot}

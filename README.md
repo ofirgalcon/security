@@ -45,4 +45,4 @@ Database:
 * as_third_party_kexts - varchar(255) - 3rd party kexts allowed, Apple Silicon Macs only
 * as_user_mdm_control - varchar(255) - User allowed MDM control, Apple Silicon Macs only
 * as_dep_mdm_control - varchar(255) - DEP allowed MDM control, Apple Silicon Macs only
-
+* apple_setup_timestamp - bigint - Timestamp of when .AppleSetupDone file was created

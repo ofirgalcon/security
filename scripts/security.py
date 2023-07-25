@@ -7,7 +7,6 @@ import os
 import sys
 import subprocess
 import grp
-import plistlib
 
 sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
@@ -602,6 +601,10 @@ def main():
         result.update({'t2_secureboot': "SECUREBOOT_UNSUPPORTED"})
         result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
     result.update({'activation_lock': activation_lock_check()})
+
+    if os.path.isfile("/var/db/.AppleSetupDone"):
+        result.update({'apple_setup_timestamp':str(int(os.path.getmtime("/var/db/.AppleSetupDone")))})
+
     result.update(get_filevault_status())
 
     # Write results of checks to cache file

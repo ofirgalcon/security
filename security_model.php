@@ -27,6 +27,7 @@ class Security_model extends Eloquent
 		'as_third_party_kexts',
 		'as_user_mdm_control',
 		'as_dep_mdm_control',
+		'apple_setup_timestamp',
 	];
 
 	public $timestamps = false;

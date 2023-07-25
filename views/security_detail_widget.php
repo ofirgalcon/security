@@ -42,6 +42,16 @@ $(document).on('appReady', function(){
                             .text(item.ard_groups)))
                     .append($('<tr>')
                         .append($('<th>')
+                            .text(i18n.t('security.apple_setup_timestamp')))
+                        .append($('<td>')
+                            .html(function(){
+                                if(item.apple_setup_timestamp > 0){
+                                    var date = new Date(parseInt(item.apple_setup_timestamp) * 1000);
+                                    return('<span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span>')
+                                }
+                            })))
+                    .append($('<tr>')
+                        .append($('<th>')
                             .text(i18n.t('security.firmwarepw')))
                         .append($('<td>')
                             .text(item.firmwarepw)))
