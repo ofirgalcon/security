@@ -625,7 +625,7 @@ def main():
         out, err = sp.communicate()
         out_value = out.decode()
 
-        sp = subprocess.Popen(['/usr/libexec/mdmclient', 'QuerySecurityInfo'], stdout=subprocess.PIPE)
+        sp = subprocess.Popen(['/usr/libexec/mdmclient', 'QuerySecurityInfo'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = sp.communicate()
         out_mdmclient = out.decode()
 
