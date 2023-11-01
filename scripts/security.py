@@ -99,6 +99,44 @@ def t2_externalboot_check():
     
     return externalboot_value
 
+def as_secureboot_check(out_mdmclient):
+    """ Checks Secure Boot settings with mdmclient result. Apple Silicon models only. """
+
+    if "SecureBootLevel = full" in out_mdmclient:
+        secureboot_value = "SECUREBOOT_FULL"
+    elif "SecureBootLevel = medium" in out_mdmclient:
+        secureboot_value = "SECUREBOOT_MEDIUM"
+    elif "SecureBootLevel = off" in out_mdmclient:
+        secureboot_value = "SECUREBOOT_OFF"
+    else:
+        secureboot_value = "SECUREBOOT_UNKNOWN"           
+
+    return secureboot_value
+
+def as_externalboot_check(out_mdmclient):
+    """ Checks External Boot settings with mdmclient result. Apple Silicon models only. """
+    
+    if "ExternalBootLevel = allowed" in out_mdmclient:
+        externalboot_value = "EXTERNALBOOT_ON"
+    elif "ExternalBootLevel = disallowed" in out_mdmclient:
+        externalboot_value = "EXTERNALBOOT_OFF"
+    else:
+        externalboot_value = "EXTERNALBOOT_UNKNOWN"           
+    
+    return externalboot_value
+
+def as_recovery_lock_check(out_mdmclient):
+    """ Checks Recovery Lock settings with mdmclient result. Apple Silicon models only. """
+    
+    if "IsRecoveryLockEnabled = 1" in out_mdmclient:
+        externalboot_value = "Yes"
+    elif "IsRecoveryLockEnabled = 0" in out_mdmclient:
+        externalboot_value = "No"
+    else:
+        externalboot_value = "Unknown"           
+    
+    return externalboot_value
+
 def as_security_mode_check(out_value):
     """ Checks Security Mode settings. Apple Silicon Macs only. """
 
@@ -587,12 +625,17 @@ def main():
         out, err = sp.communicate()
         out_value = out.decode()
 
+        sp = subprocess.Popen(['/usr/libexec/mdmclient', 'QuerySecurityInfo'], stdout=subprocess.PIPE)
+        out, err = sp.communicate()
+        out_mdmclient = out.decode()
+
         result.update({'as_security_mode': as_security_mode_check(out_value)})
         result.update({'as_third_party_kexts': as_third_party_kexts(out_value)})
         result.update({'as_user_mdm_control': as_user_mdm_control(out_value)})
         result.update({'as_dep_mdm_control': as_dep_mdm_control(out_value)})
-        result.update({'t2_secureboot': "SECUREBOOT_UNSUPPORTED"})
-        result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
+        result.update({'t2_secureboot': as_secureboot_check(out_mdmclient)})
+        result.update({'t2_externalboot': as_externalboot_check(out_mdmclient)})
+        result.update({'firmwarepw': as_recovery_lock_check(out_mdmclient)}) # This overwrites the "Unsupported" value from before
     else:
         result.update({'as_security_mode': "SECURITYMODE_UNSUPPORTED"})
         result.update({'as_third_party_kexts': "UNSUPPORTED"})

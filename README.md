@@ -33,11 +33,11 @@ Database:
 * ard_groups - varchar(255) - Apple Remote Desktop enabled groups
 * root_user - varchar(255) - Status of root user account
 * ard_users - varchar(255) - Apple Remote Desktop enabled users
-* firmwarepw - varchar(255) - Status of firmware password
+* firmwarepw - varchar(255) - Status of firmware password or Recovery Lock
 * firewall_state - varchar(255) - Status of firewall
 * skel_state - varchar(255) - SKEL state
-* t2_secureboot - varchar(255) - State of SecureBoot
-* t2_externalboot - varchar(255) - State of External Boot
+* t2_secureboot - varchar(255) - State of SecureBoot, T2 and Apple Silicon Macs only
+* t2_externalboot - varchar(255) - State of External Boot, T2 and Apple Silicon Macs only
 * activation_lock - varchar(255) - Status of Activation lock
 * filevault_status - boolean - FileVault encrypted or unencrypted
 * filevault_users - varchar(255) - FileVault enabled users
