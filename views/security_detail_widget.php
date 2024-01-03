@@ -52,6 +52,18 @@ $(document).on('appReady', function(){
                             })))
                     .append($('<tr>')
                         .append($('<th>')
+                            .text(i18n.t('security.console_session_locked')))
+                        .append($('<td>')
+                            .text(function(){
+                                if(item.console_session_locked == '1'){
+                                    return i18n.t('yes');
+                                }
+                                if(item.console_session_locked == '0'){
+                                    return i18n.t('no');
+                                }
+                            })))
+                    .append($('<tr>')
+                        .append($('<th>')
                             .text(i18n.t('security.firmwarepw')))
                         .append($('<td>')
                             .text(item.firmwarepw)))

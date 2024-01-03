@@ -7,6 +7,7 @@ table:
   - column: reportdata.serial_number
     i18n_header: serial
   - {i18n_header: username, column: reportdata.long_username}
+  - {i18n_header: security.console_session_locked, column: security.console_session_locked, formatter: formatConsoleSessionLocked, filter: console_session_locked_state}
   - {i18n_header: security.filevault_users, column: security.filevault_users}
   - {i18n_header: type, column: machine.machine_name}
   - {i18n_header: security.filevault_status, column: security.filevault_status, formatter: formatSecurityFileVaultEncrypted, filter: fv_state}

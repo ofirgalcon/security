@@ -13,10 +13,9 @@ class SecurityAddAsSecurityMode extends Migration
         $capsule::schema()->table($this->tableName, function (Blueprint $table) {
           $table->string('as_security_mode')->nullable();
           $table->index('as_security_mode');
-          
         });
     }
-    
+
     public function down()
     {
         $capsule = new Capsule();

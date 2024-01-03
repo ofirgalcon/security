@@ -14,7 +14,7 @@ class SecurityAddAppleSetupTimestamp extends Migration
           $table->bigInteger('apple_setup_timestamp')->nullable();
         });
     }
-    
+
     public function down()
     {
         $capsule = new Capsule();

@@ -46,3 +46,4 @@ Database:
 * as_user_mdm_control - varchar(255) - User allowed MDM control, Apple Silicon Macs only
 * as_dep_mdm_control - varchar(255) - DEP allowed MDM control, Apple Silicon Macs only
 * apple_setup_timestamp - bigint - Timestamp of when .AppleSetupDone file was created
+* console_session_locked - boolean - If console session is locked or not

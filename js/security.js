@@ -7,6 +7,15 @@ var formatSecurityFirewall = function(colNumber, row){
     col.html(colvar)
 }
 
+var formatConsoleSessionLocked = function(colNumber, row){
+    var col = $('td:eq('+colNumber+')', row),
+        colvar = col.text();
+    colvar = colvar == '1' ? '<span class="label label-success">'+i18n.t('yes')+'</span>' :
+    (colvar === '0' ? '<span class="label label-info">'+i18n.t('no')+'</span>' : 
+    colvar = "")
+    col.html(colvar)
+}
+
 var formatSecurityFileVaultEncrypted = function(colNumber, row){
     var col = $('td:eq('+colNumber+')', row),
         colvar = col.text();
@@ -109,7 +118,6 @@ var formatSecurityActivationLock = function(colNumber, row){
 var formatSecuritytimestampToMoment =  function(colNumber, row){
     var col = $('td:eq('+colNumber+')', row),
         colvar = col.text();
-        console.log(colvar)
     if (colvar > 0){
         var date = new Date(parseInt(colvar) * 1000);
         col.html('<span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span>')
@@ -211,6 +219,26 @@ var firewall_state = function(colNumber, d){
     {
         // Add column specific search
         d.columns[colNumber].search.value = '= 2';
+        // Clear global search
+        d.search.value = '';
+    }
+}
+
+var console_session_locked_state = function(colNumber, d){
+    // Look for '1' keyword
+    if(d.search.value.match(/^console_session_locked_yes/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 1';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for '0' keyword
+    if(d.search.value.match(/^console_session_locked_no/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 0';
         // Clear global search
         d.search.value = '';
     }

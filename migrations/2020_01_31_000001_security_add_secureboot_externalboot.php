@@ -15,10 +15,9 @@ class SecurityAddSecurebootExternalboot extends Migration
           $table->string('t2_externalboot')->default('')->nullable();
           $table->index('t2_secureboot');
           $table->index('t2_externalboot');
-          
         });
     }
-    
+
     public function down()
     {
         $capsule = new Capsule();

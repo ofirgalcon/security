@@ -4,6 +4,7 @@
     "ard_users": "ARD Users",
     "activation_lock_status": "Activation Lock Status",
     "block_all": "Block All",
+    "console_session_locked": "Screen Locked",
     "dep_mdm_control": "DEP Allowed MDM Control",
     "firewall_state": "Firewall State",
     "filevault_status": "FileVault Status",

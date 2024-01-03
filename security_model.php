@@ -28,6 +28,7 @@ class Security_model extends Eloquent
 		'as_user_mdm_control',
 		'as_dep_mdm_control',
 		'apple_setup_timestamp',
+		'console_session_locked',
 	];
 
 	public $timestamps = false;

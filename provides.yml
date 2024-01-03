@@ -40,3 +40,5 @@ widgets:
         view: user_mdm_control_widget
     dep_mdm_control:
         view: dep_mdm_control_widget
+    screen_locked:
+        view: screen_locked_widget

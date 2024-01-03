@@ -3,7 +3,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-class SecurityRootUser extends Migration
+class SecurityAddConsoleSessionLocked extends Migration
 {
     private $tableName = 'security';
 
@@ -11,8 +11,7 @@ class SecurityRootUser extends Migration
     {
         $capsule = new Capsule();
         $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-          $table->string('root_user')->after('ard_groups')->default('')->nullable();
-          $table->index('root_user');
+          $table->boolean('console_session_locked')->nullable();
         });
     }
 
@@ -20,7 +19,7 @@ class SecurityRootUser extends Migration
     {
         $capsule = new Capsule();
         $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-            $table->dropColumn('root_user');
+            $table->dropColumn('console_session_locked');
         });
     }
 }

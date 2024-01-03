@@ -17,7 +17,7 @@ class Security_processor extends Processor
         if ( ! $plist){
             throw new Exception("Error Processing Request: No property list found", 1);
         }
-        
+
         $parser = new CFPropertyList();
         $parser->parse($plist, CFPropertyList::FORMAT_XML);
         $mylist = $parser->toArray();

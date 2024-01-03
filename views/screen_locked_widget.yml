@@ -1,0 +1,16 @@
+type: button
+widget_id: screen_locked-widget
+api_url: /module/security/get_screen_locked
+i18n_title: security.console_session_locked
+listing_link: /show/listing/security/security
+icon: fa-lock
+i18nEmptyResult: no_clients
+buttons:
+  - label: Yes
+    i18n_label: yes
+    class: btn-success
+    search_component: console_session_locked_yes
+  - label: No
+    i18n_label: no
+    class: btn-info
+    search_component: console_session_locked_no

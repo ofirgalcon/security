@@ -9,22 +9,22 @@
 class Security_controller extends Module_controller
 {
 
-	/*** Protect methods with auth! ****/
-	function __construct()
-	{
-		// Store module path
-		$this->module_path = dirname(__FILE__);
-	}
+    /*** Protect methods with auth! ****/
+    function __construct()
+    {
+        // Store module path
+        $this->module_path = dirname(__FILE__);
+    }
 
-	/**
-	 * Default method
-	 * @author AvB
-	 *
-	 **/
-	function index()
-	{
-		echo "You've loaded the security module!";
-	}
+    /**
+     * Default method
+     * @author AvB
+     *
+     **/
+    function index()
+    {
+        echo "You've loaded the security module!";
+    }
 
     /**
     * Get Activation Lock statistics data in json format
@@ -296,7 +296,24 @@ class Security_controller extends Module_controller
         );
     }
 
-	/**
+    /**
+    * Get screen locked data in json format
+    *
+    * @return void
+    * @author tuxudo
+    **/
+    public function get_screen_locked()
+    {
+        jsonView(
+            Security_model::selectRaw("COUNT(CASE WHEN `console_session_locked` = 1 THEN 1 END) AS 'Yes'")
+                ->selectRaw("COUNT(CASE WHEN `console_session_locked` = 0 THEN 1 END) AS 'No'")
+                ->filter()
+                ->first()
+                ->toLabelCount()
+        );
+    }
+
+    /**
      * Retrieve data in json format
      *
      **/

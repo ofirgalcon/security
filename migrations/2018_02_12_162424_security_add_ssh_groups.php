@@ -9,21 +9,17 @@ class SecurityAddSshGroups extends Migration
 
   public function up()
   {
-  
-  $capsule = new Capsule();
-
-      $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-          $table->string('ssh_groups')->after('sip')->default('');
-      });
+    $capsule = new Capsule();
+    $capsule::schema()->table($this->tableName, function (Blueprint $table) {
+        $table->string('ssh_groups')->after('sip')->default('');
+    });
   }
 
   public function down()
   {
-
-  $capsule = new Capsule();
-
-      $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-          $table->dropColumn('ssh_groups');
-      });
+    $capsule = new Capsule();
+    $capsule::schema()->table($this->tableName, function (Blueprint $table) {
+        $table->dropColumn('ssh_groups');
+    });
   }
 }

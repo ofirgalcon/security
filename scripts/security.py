@@ -43,7 +43,7 @@ def activation_lock_check():
         (output, unused_error) = proc.communicate()
 
         plist = FoundationPlist.readPlistFromString(output)
-            
+
         # system_profiler xml is an array
         sp_dict = plist[0]
         items = sp_dict['_items']
@@ -79,24 +79,24 @@ def t2_secureboot_check():
     elif "%00" in out_value:
         secureboot_value = "SECUREBOOT_OFF"
     else:
-        secureboot_value = "SECUREBOOT_UNKNOWN"           
+        secureboot_value = "SECUREBOOT_UNKNOWN"
 
     return secureboot_value
 
 def t2_externalboot_check():
     """ Checks External Boot settings from nvram. T2 chip models only. """
-    
+
     sp = subprocess.Popen(['/usr/sbin/nvram', '5eeb160f-45fb-4ce9-b4e3-610359abf6f8:StartupManagerPolicy'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
     out_value = out.decode().split("\t")[1].rstrip()
-    
+
     if "%03" in out_value:
         externalboot_value = "EXTERNALBOOT_ON"
     elif "%00" in out_value:
         externalboot_value = "EXTERNALBOOT_OFF"
     else:
-        externalboot_value = "EXTERNALBOOT_UNKNOWN"           
-    
+        externalboot_value = "EXTERNALBOOT_UNKNOWN"
+
     return externalboot_value
 
 def as_secureboot_check(out_mdmclient):
@@ -109,32 +109,32 @@ def as_secureboot_check(out_mdmclient):
     elif "SecureBootLevel = off" in out_mdmclient:
         secureboot_value = "SECUREBOOT_OFF"
     else:
-        secureboot_value = "SECUREBOOT_UNKNOWN"           
+        secureboot_value = "SECUREBOOT_UNKNOWN"
 
     return secureboot_value
 
 def as_externalboot_check(out_mdmclient):
     """ Checks External Boot settings with mdmclient result. Apple Silicon models only. """
-    
+
     if "ExternalBootLevel = allowed" in out_mdmclient:
         externalboot_value = "EXTERNALBOOT_ON"
     elif "ExternalBootLevel = disallowed" in out_mdmclient:
         externalboot_value = "EXTERNALBOOT_OFF"
     else:
-        externalboot_value = "EXTERNALBOOT_UNKNOWN"           
-    
+        externalboot_value = "EXTERNALBOOT_UNKNOWN"
+
     return externalboot_value
 
 def as_recovery_lock_check(out_mdmclient):
     """ Checks Recovery Lock settings with mdmclient result. Apple Silicon models only. """
-    
+
     if "IsRecoveryLockEnabled = 1" in out_mdmclient:
         externalboot_value = "Yes"
     elif "IsRecoveryLockEnabled = 0" in out_mdmclient:
         externalboot_value = "No"
     else:
-        externalboot_value = "Unknown"           
-    
+        externalboot_value = "Unknown"
+
     return externalboot_value
 
 def as_security_mode_check(out_value):
@@ -145,9 +145,9 @@ def as_security_mode_check(out_value):
     elif "Security Mode:               Reduced" in out_value:
         security_mode_value = "REDUCED_SECURITY"
     elif "Security Mode:               Permissive" in out_value:
-        security_mode_value = "PERMISSIVE_SECURITY"           
+        security_mode_value = "PERMISSIVE_SECURITY"
     else:
-        security_mode_value = "UNKNOWN"           
+        security_mode_value = "UNKNOWN"
 
     return security_mode_value
 
@@ -159,7 +159,7 @@ def as_user_mdm_control(out_value):
     elif "User-allowed MDM Control:    Disabled" in out_value:
         user_mdm_control_value = "Disabled"
     else:
-        user_mdm_control_value = "UNKNOWN"           
+        user_mdm_control_value = "UNKNOWN"
 
     return user_mdm_control_value
 
@@ -171,7 +171,7 @@ def as_dep_mdm_control(out_value):
     elif "DEP-allowed MDM Control:     Disabled" in out_value:
         dep_mdm_control_value = "Disabled"
     else:
-        dep_mdm_control_value = "UNKNOWN"           
+        dep_mdm_control_value = "UNKNOWN"
 
     return dep_mdm_control_value
 
@@ -183,7 +183,7 @@ def as_third_party_kexts(out_value):
     elif "3rd Party Kexts Status:      Disabled" in out_value:
         third_party_kexts_value = "Disabled"
     else:
-        third_party_kexts_value = "UNKNOWN"           
+        third_party_kexts_value = "UNKNOWN"
 
     return third_party_kexts_value
 
@@ -596,6 +596,20 @@ def get_filevault_status():
 
     return fv_info
 
+def get_console_session_state():
+    # https://stackoverflow.com/questions/11505255/osx-check-if-the-screen-is-locked
+    try:
+        cmd = ['/usr/sbin/ioreg', '-n', 'Root', '-d1', '-a']
+        proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (output, unused_error) = proc.communicate()
+
+        plist = FoundationPlist.readPlistFromString(output)
+
+        return plist["IOConsoleLocked"]
+    except:
+        return ""
 
 def main():
     """main"""
@@ -609,9 +623,9 @@ def main():
     result.update({'ard_users': ard_access_check()})
     result.update({'ard_groups': ard_group_access_check()})
     result.update({'firmwarepw': firmware_pw_check()})
-    result.update({'firewall_state':firewall_enable_check()})
-    result.update({'skel_state':skel_state_check()})
-    result.update({'root_user':root_enabled_check()})
+    result.update({'firewall_state': firewall_enable_check()})
+    result.update({'skel_state': skel_state_check()})
+    result.update({'root_user': root_enabled_check()})
     if t2_chip_check():
         result.update({'as_security_mode': "SECURITYMODE_UNSUPPORTED"})
         result.update({'as_third_party_kexts': "UNSUPPORTED"})
@@ -644,6 +658,10 @@ def main():
         result.update({'t2_secureboot': "SECUREBOOT_UNSUPPORTED"})
         result.update({'t2_externalboot': "EXTERNALBOOT_UNSUPPORTED"})
     result.update({'activation_lock': activation_lock_check()})
+
+    console_state = get_console_session_state()
+    if console_state != "":
+        result.update({'console_session_locked': console_state})
 
     if os.path.isfile("/var/db/.AppleSetupDone"):
         result.update({'apple_setup_timestamp':str(int(os.path.getmtime("/var/db/.AppleSetupDone")))})

@@ -15,10 +15,9 @@ class SecurityAddFilevaultInfo extends Migration
           $table->string('filevault_users')->nullable();
           $table->index('filevault_status');
           $table->index('filevault_users');
-          
         });
     }
-    
+
     public function down()
     {
         $capsule = new Capsule();

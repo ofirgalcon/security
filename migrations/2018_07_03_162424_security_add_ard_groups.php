@@ -9,24 +9,19 @@ class SecurityAddArdGroups extends Migration
 
   public function up()
   {
-  
-  $capsule = new Capsule();
+    $capsule = new Capsule();
+    $capsule::schema()->table($this->tableName, function (Blueprint $table) {
+      $table->string('ard_groups')->after('ssh_users')->default('')->nullable();
 
-      $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-          $table->string('ard_groups')->after('ssh_users')->default('')->nullable();
-
-          $table->index('ard_groups');
-
-      });
+      $table->index('ard_groups');
+    });
   }
 
   public function down()
   {
-
-  $capsule = new Capsule();
-
-      $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-          $table->dropColumn('ard_groups');
-      });
-  }
+    $capsule = new Capsule();
+        $capsule::schema()->table($this->tableName, function (Blueprint $table) {
+            $table->dropColumn('ard_groups');
+        });
+    }
 }

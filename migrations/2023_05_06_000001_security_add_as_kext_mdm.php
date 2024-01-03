@@ -16,7 +16,7 @@ class SecurityAddAsKextMdm extends Migration
           $table->string('as_dep_mdm_control')->nullable();          
         });
     }
-    
+
     public function down()
     {
         $capsule = new Capsule();

@@ -13,10 +13,9 @@ class SecurityAddActivationLock extends Migration
         $capsule::schema()->table($this->tableName, function (Blueprint $table) {
           $table->string('activation_lock')->default('')->nullable();
           $table->index('activation_lock');
-          
         });
     }
-    
+
     public function down()
     {
         $capsule = new Capsule();
