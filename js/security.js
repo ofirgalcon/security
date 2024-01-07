@@ -10,6 +10,11 @@ var formatSecurityFirewall = function(colNumber, row){
 var formatConsoleSessionLocked = function(colNumber, row){
     var col = $('td:eq('+colNumber+')', row),
         colvar = col.text();
+    colvar = colvar == '7' ? '<span class="label label-success">'+i18n.t('security.locked_display_off')+'</span>' :
+    colvar = colvar == '6' ? '<span class="label label-warning">'+i18n.t('security.unlocked_display_off')+'</span>' :
+    colvar = colvar == '5' ? '<span class="label label-success">'+i18n.t('security.locked_screen_saver')+'</span>' :
+    colvar = colvar == '4' ? '<span class="label label-warning">'+i18n.t('security.unlocked_screen_saver')+'</span>' :
+    colvar = colvar == '3' ? '<span class="label label-success">'+i18n.t('security.locked_login_window')+'</span>' :
     colvar = colvar == '1' ? '<span class="label label-success">'+i18n.t('yes')+'</span>' :
     (colvar === '0' ? '<span class="label label-info">'+i18n.t('no')+'</span>' : 
     colvar = "")
@@ -225,6 +230,51 @@ var firewall_state = function(colNumber, d){
 }
 
 var console_session_locked_state = function(colNumber, d){
+    // Look for '7' keyword
+    if(d.search.value.match(/^console_session_locked_yes_do/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 7';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for '6' keyword
+    if(d.search.value.match(/^console_session_locked_no_do/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 6';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for '5' keyword
+    if(d.search.value.match(/^console_session_locked_yes_ss/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 5';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for '4' keyword
+    if(d.search.value.match(/^console_session_locked_no_ss/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 4';
+        // Clear global search
+        d.search.value = '';
+    }
+
+    // Look for '3' keyword
+    if(d.search.value.match(/^console_session_locked_yes_lw/))
+    {
+        // Add column specific search
+        d.columns[colNumber].search.value = '= 3';
+        // Clear global search
+        d.search.value = '';
+    }
+
     // Look for '1' keyword
     if(d.search.value.match(/^console_session_locked_yes/))
     {

@@ -6,11 +6,38 @@ listing_link: /show/listing/security/security
 icon: fa-lock
 i18nEmptyResult: no_clients
 buttons:
+  - label: No-DisplayOff
+    i18n_label: security.unlocked_display_off
+    class: btn-warning
+    search_component: console_session_locked_no_do
+    hide_when_zero: true
+  - label: No-ScreenSaver
+    i18n_label: security.unlocked_screen_saver
+    class: btn-warning
+    search_component: console_session_locked_no_ss
+    hide_when_zero: true
+  - label: Yes-DisplayOff
+    i18n_label: security.locked_display_off
+    class: btn-success
+    search_component: console_session_locked_yes_do
+    hide_when_zero: true
+  - label: Yes-ScreenSaver
+    i18n_label: security.locked_screen_saver
+    class: btn-success
+    search_component: console_session_locked_yes_ss
+    hide_when_zero: true
+  - label: Yes-LoginWindow
+    i18n_label: security.locked_login_window
+    class: btn-success
+    search_component: console_session_locked_yes_lw
+    hide_when_zero: true
   - label: Yes
     i18n_label: yes
     class: btn-success
     search_component: console_session_locked_yes
+    hide_when_zero: true
   - label: No
     i18n_label: no
     class: btn-info
     search_component: console_session_locked_no
+    hide_when_zero: false

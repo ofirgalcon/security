@@ -25,7 +25,7 @@ def gatekeeper_check():
     if float(os.uname()[2][0:2]) >= 11:
         sp = subprocess.Popen(['/usr/sbin/spctl', '--status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = sp.communicate()
-        if "enabled" in out.decode():
+        if "enabled" in out.decode("utf-8", errors="ignore"):
             return "Active"
         else:
             return "Disabled"
@@ -60,7 +60,7 @@ def t2_chip_check():
 
     sp = subprocess.Popen(['/usr/sbin/system_profiler', 'SPiBridgeDataType'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
-    if "Apple T2" in out.decode():
+    if "Apple T2" in out.decode("utf-8", errors="ignore"):
         return True
     else:
         return False
@@ -70,7 +70,7 @@ def t2_secureboot_check():
 
     sp = subprocess.Popen(['/usr/sbin/nvram', '94b73556-2197-4702-82a8-3e1337dafbfb:AppleSecureBootPolicy'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
-    out_value = out.decode().split("\t")[1].rstrip() 
+    out_value = out.decode("utf-8", errors="ignore").split("\t")[1].rstrip() 
 
     if "%02" in out_value:
         secureboot_value = "SECUREBOOT_FULL"
@@ -88,7 +88,7 @@ def t2_externalboot_check():
 
     sp = subprocess.Popen(['/usr/sbin/nvram', '5eeb160f-45fb-4ce9-b4e3-610359abf6f8:StartupManagerPolicy'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
-    out_value = out.decode().split("\t")[1].rstrip()
+    out_value = out.decode("utf-8", errors="ignore").split("\t")[1].rstrip()
 
     if "%03" in out_value:
         externalboot_value = "EXTERNALBOOT_ON"
@@ -217,7 +217,7 @@ def ssh_user_access_check():
     sp = subprocess.Popen(['/usr/sbin/systemsetup', '-getremotelogin'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
 
-    if "Off" in out.decode():
+    if "Off" in out.decode("utf-8", errors="ignore"):
         return "SSH Disabled"
 
     else:
@@ -231,16 +231,16 @@ def ssh_user_access_check():
         sp = subprocess.Popen(['/usr/bin/dscl', '.', 'list', '/Groups'], stdout=subprocess.PIPE)
         out, err = sp.communicate()
 
-        if "com.apple.access_ssh-disabled" in out.decode():
+        if "com.apple.access_ssh-disabled" in out.decode("utf-8", errors="ignore"):
             # if this group exists, all users are permitted to access SSH
             return "All users permitted"
 
-        elif "com.apple.access_ssh" in out.decode():
+        elif "com.apple.access_ssh" in out.decode("utf-8", errors="ignore"):
             # if this group exists, SSH is enabled but only some users are permitted
             # Get a list of users in the com.apple.access_ssh GroupMembership
             user_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.access_ssh', 'GroupMembership'], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
             user_out, user_err = user_sp.communicate()
-            user_list = user_out.decode().split()
+            user_list = user_out.decode("utf-8", errors="ignore").split()
 
             return ', '.join(item for item in user_list[1:])
 
@@ -258,7 +258,7 @@ def ssh_group_access_check():
     sp = subprocess.Popen(['/usr/sbin/systemsetup', '-getremotelogin'], stdout=subprocess.PIPE)
     out, err = sp.communicate()
 
-    if "Off" in out.decode():
+    if "Off" in out.decode("utf-8", errors="ignore"):
         return "SSH Disabled"
 
     else:
@@ -272,12 +272,12 @@ def ssh_group_access_check():
         sp = subprocess.Popen(['/usr/bin/dscl', '.', 'list', '/Groups'], stdout=subprocess.PIPE)
         out, err = sp.communicate()
 
-        if "com.apple.access_ssh-disabled" in out.decode():
+        if "com.apple.access_ssh-disabled" in out.decode("utf-8", errors="ignore"):
             # if this group exists, all users are permitted to access SSH.
             # Nothing group specific
             return ''
 
-        elif "com.apple.access_ssh" in out.decode():
+        elif "com.apple.access_ssh" in out.decode("utf-8", errors="ignore"):
             # Get a list of UUIDs of Nested Groups
             group_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.access_ssh', 'NestedGroups'], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
             group_out, group_err = group_sp.communicate()
@@ -290,7 +290,7 @@ def ssh_group_access_check():
                     group_id_sp = subprocess.Popen(['/usr/bin/dsmemberutil', 'getid', '-x', group_uuid], stdout=subprocess.PIPE)
                     group_id_out, group_id_err = group_id_sp.communicate()
                     if group_id_sp.returncode == 0:
-                        group_id_out_2 = int(group_id_out.decode().split()[1])
+                        group_id_out_2 = int(group_id_out.decode("utf-8", errors="ignore").split()[1])
                         group_name = grp.getgrgid(group_id_out_2).gr_name
                         if group_name not in group_list:
                             group_list.append(group_name)
@@ -324,7 +324,7 @@ def ard_access_check():
             sp = subprocess.Popen(['/usr/bin/dscl', '.', '-list', '/Users'], stdout=subprocess.PIPE)
             out, err = sp.communicate()
 
-            user_list = out.decode().split()
+            user_list = out.decode("utf-8", errors="ignore").split()
             ard_users = []
             for user in user_list:
                 if user[0] in '_':
@@ -333,7 +333,7 @@ def ard_access_check():
                     args = '/Users/' + user
                     sp = subprocess.Popen(['/usr/bin/dscl', '.', '-read', args, 'naprivs'], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                     out, err = sp.communicate()
-                if out.decode() not in 'No such key':
+                if out.decode("utf-8", errors="ignore") not in 'No such key':
                     ard_users.append(user)
                 else:
                     pass
@@ -342,34 +342,34 @@ def ard_access_check():
             remote_out, remote_err = remote_user_check.communicate()
 
             ard_user_list = []
-            if "com.apple.local.ard_interact" in remote_out.decode():
+            if "com.apple.local.ard_interact" in remote_out.decode("utf-8", errors="ignore"):
                 ard_gm_check = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_interact'], stdout=subprocess.PIPE)
                 ard_gm_check_out, ard_gm_check_err = ard_gm_check.communicate()
 
-                if "GroupMembership" in ard_gm_check_out.decode():
+                if "GroupMembership" in ard_gm_check_out.decode("utf-8", errors="ignore"):
                     ard_user_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_interact', 'GroupMembership'], stdout=subprocess.PIPE)
                     ard_user_out, ard_user_err = ard_user_sp.communicate()
-                    ard_user_list = ard_user_out.decode().split()
+                    ard_user_list = ard_user_out.decode("utf-8", errors="ignore").split()
                     ard_users.extend(ard_user_list[1:])
 
-            if "com.apple.local.ard_admin" in remote_out.decode():
+            if "com.apple.local.ard_admin" in remote_out.decode("utf-8", errors="ignore"):
                 ard_gm_check = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_admin'], stdout=subprocess.PIPE)
                 ard_gm_check_out, ard_gm_check_err = ard_gm_check.communicate()
 
-                if "GroupMembership" in ard_gm_check_out.decode():
+                if "GroupMembership" in ard_gm_check_out.decode("utf-8", errors="ignore"):
                     ard_user_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_admin', 'GroupMembership'], stdout=subprocess.PIPE)
                     ard_user_out, ard_user_err = ard_user_sp.communicate()
-                    ard_user_list = ard_user_out.decode().split()
+                    ard_user_list = ard_user_out.decode("utf-8", errors="ignore").split()
                     if ard_user_out not in ard_user_list:
                         ard_users.extend(ard_user_list[1:])
 
-            if "com.apple.local.ard_manage" in remote_out.decode():
+            if "com.apple.local.ard_manage" in remote_out.decode("utf-8", errors="ignore"):
                 ard_gm_check = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_manage'], stdout=subprocess.PIPE)
                 ard_gm_check_out, ard_gm_check_err = ard_gm_check.communicate()
 
-                if "GroupMembership" in ard_gm_check_out.decode():
+                if "GroupMembership" in ard_gm_check_out.decode("utf-8", errors="ignore"):
                     ard_user_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_manage', 'GroupMembership'], stdout=subprocess.PIPE)
-                    ard_user_out, ard_user_err = ard_user_sp.decode().communicate()
+                    ard_user_out, ard_user_err = ard_user_sp.decode("utf-8", errors="ignore").communicate()
                     ard_user_list = ard_user_out.split()
                     if ard_user_out not in ard_user_list:
                         ard_users.extend(ard_user_list[1:])
@@ -399,12 +399,12 @@ def ard_group_access_check():
             group_list = []
 
             #Check if ard_interact is in the group list
-            if "com.apple.local.ard_interact" in remote_group_out.decode():
+            if "com.apple.local.ard_interact" in remote_group_out.decode("utf-8", errors="ignore"):
                 # If so read the group and check if there is a NestedGroups value
                 ard_ng_check = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_interact'], stdout=subprocess.PIPE)
                 ard_ng_check_out, ard_ng_check_err = ard_ng_check.communicate()
 
-                if "NestedGroups" in ard_ng_check_out.decode():
+                if "NestedGroups" in ard_ng_check_out.decode("utf-8", errors="ignore"):
                     try:
                         # Get a list of UUIDs of Nested Groups
                         group_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_interact', 'NestedGroups'], stdout=subprocess.PIPE)
@@ -416,7 +416,7 @@ def ard_group_access_check():
                             for group_uuid in group_list_uuid[1:]:
                                 group_id_sp = subprocess.Popen(['/usr/bin/dsmemberutil', 'getid', '-x', group_uuid], stdout=subprocess.PIPE)
                                 group_id_out, group_id_err = group_id_sp.communicate()
-                                group_name = grp.getgrgid(int(group_id_out.decode().split()[1])).gr_name
+                                group_name = grp.getgrgid(int(group_id_out.decode("utf-8", errors="ignore").split()[1])).gr_name
                                 if group_name not in group_list:
                                     group_list.append(group_name)
                         except IndexError:
@@ -425,17 +425,17 @@ def ard_group_access_check():
                         pass
 
             #Check if ard_admin is in the group list
-            if "com.apple.local.ard_admin" in remote_group_out.decode():
+            if "com.apple.local.ard_admin" in remote_group_out.decode("utf-8", errors="ignore"):
                 # If so read the group and check if there is a NestedGroups value
                 ard_ng_check = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_admin'], stdout=subprocess.PIPE)
                 ard_ng_check_out, ard_ng_check_err = ard_ng_check.communicate()
 
-                if "NestedGroups" in ard_ng_check_out.decode():
+                if "NestedGroups" in ard_ng_check_out.decode("utf-8", errors="ignore"):
                     try:
                         # Get a list of UUIDs of Nested Groups
                         group_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_admin', 'NestedGroups'], stdout=subprocess.PIPE)
                         group_out, group_err = group_sp.communicate()
-                        group_list_uuid = group_out.decode().split()
+                        group_list_uuid = group_out.decode("utf-8", errors="ignore").split()
 
                         # Translate group UUIDs to gids
                         try:
@@ -443,8 +443,8 @@ def ard_group_access_check():
                                 group_id_sp = subprocess.Popen(['/usr/bin/dsmemberutil', 'getid', '-x', group_uuid], stdout=subprocess.PIPE)
                                 group_id_out, group_id_err = group_id_sp.communicate()
                                 if group_id_sp.returncode == 0:
-                                    ard_group = grp.getgrgid(int(group_id_out.decode().split()[1])).gr_name
-                                    group_name = grp.getgrgid(int(group_id_out.decode().split()[1])).gr_name
+                                    ard_group = grp.getgrgid(int(group_id_out.decode("utf-8", errors="ignore").split()[1])).gr_name
+                                    group_name = grp.getgrgid(int(group_id_out.decode("utf-8", errors="ignore").split()[1])).gr_name
                                     if group_name not in group_list:
                                         group_list.append(group_name)
                         except IndexError:
@@ -453,17 +453,17 @@ def ard_group_access_check():
                         pass
 
             #Check if ard_manage is in the group list
-            if "com.apple.local.ard_manage" in remote_group_out.decode():
+            if "com.apple.local.ard_manage" in remote_group_out.decode("utf-8", errors="ignore"):
                 # If so read the group and check if there is a NestedGroups value
                 ard_ng_check = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_manage'], stdout=subprocess.PIPE)
                 ard_ng_check_out, ard_ng_check_err = ard_ng_check.communicate()
 
-                if "NestedGroups" in ard_ng_check_out.decode():
+                if "NestedGroups" in ard_ng_check_out.decode("utf-8", errors="ignore"):
                     try:
                         # Get a list of UUIDs of Nested Groups
                         group_sp = subprocess.Popen(['/usr/bin/dscl', '.', 'read', '/Groups/com.apple.local.ard_manage', 'NestedGroups'], stdout=subprocess.PIPE)
                         group_out, group_err = group_sp.communicate()
-                        group_list_uuid = group_out.decode().split()
+                        group_list_uuid = group_out.decode("utf-8", errors="ignore").split()
 
                         # Translate group UUIDs to gids
                         try:
@@ -471,7 +471,7 @@ def ard_group_access_check():
                                 group_id_sp = subprocess.Popen(['/usr/bin/dsmemberutil', 'getid', '-x', group_uuid], stdout=subprocess.PIPE)
                                 group_id_out, group_id_err = group_id_sp.communicate()
                                 if group_id_sp.returncode == 0:
-                                    group_name = grp.getgrgid(int(group_id_out.decode().split()[1])).gr_name
+                                    group_name = grp.getgrgid(int(group_id_out.decode("utf-8", errors="ignore").split()[1])).gr_name
                                     if group_name not in group_list:
                                         group_list.append(group_name)
                         except IndexError:
@@ -500,10 +500,10 @@ def firmware_pw_check():
             sp = subprocess.Popen(['/usr/sbin/firmwarepasswd', '-check'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = sp.communicate()
 
-            if "machine is not supported." in err.decode():
+            if "machine is not supported." in err.decode("utf-8", errors="ignore"):
                 return "Not Supported"
             else:
-                firmwarepw = out.decode().split()[2]
+                firmwarepw = out.decode("utf-8", errors="ignore").split()[2]
         except OSError as e:
             # firmwarepasswd command not found at the path we specified
             # so set the data to blank and print a warning.
@@ -514,7 +514,7 @@ def firmware_pw_check():
         sp = subprocess.Popen(['/usr/sbin/nvram', 'security-mode'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         mode_out, mode_err = sp.communicate()
 
-        if "none" in mode_out.decode() or "Error getting variable" in mode_err.decode():
+        if "none" in mode_out.decode("utf-8", errors="ignore") or "Error getting variable" in mode_err.decode("utf-8", errors="ignore"):
             firmwarepw = "No"
         else:
             firmwarepw = "Yes"
@@ -535,7 +535,7 @@ def skel_state_check():
         sp = subprocess.Popen(['/usr/sbin/spctl', 'kext-consent', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = sp.communicate()
 
-        if "ENABLED" in out.decode():
+        if "ENABLED" in out.decode("utf-8", errors="ignore"):
             return 1
         else:
             return 0
@@ -570,7 +570,7 @@ def get_filevault_status():
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (output, unused_error) = proc.communicate()
             
-    for fv_line in output.decode().split('\n'):
+    for fv_line in output.decode("utf-8", errors="ignore").split('\n'):
         if 'FileVault is On.' in fv_line:
             fv_info['filevault_status'] = 1
     
@@ -585,7 +585,7 @@ def get_filevault_status():
 
         fv_users = []
 
-        for fv_user in output.decode().split('\n'):
+        for fv_user in output.decode("utf-8", errors="ignore").split('\n'):
             fv_users.append(fv_user.split(',')[0])
 
         del fv_users[-1]
@@ -598,18 +598,86 @@ def get_filevault_status():
 
 def get_console_session_state():
     # https://stackoverflow.com/questions/11505255/osx-check-if-the-screen-is-locked
+
+    # Even, unlocked
+    # Odd, locked
+
+    # 0 = unlocked
+    # 1 = locked
+
+    # 2 = unused
+    # 3 = locked, at login window
+
+    # 4 = unlocked, screen saver active
+    # 5 = locked, screen saver active
+
+    # 6 = unlocked, display off
+    # 7 = locked, display off
+
+    screen_lock_state = ""
+
     try:
         cmd = ['/usr/sbin/ioreg', '-n', 'Root', '-d1', '-a']
-        proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
-                                stdin=subprocess.PIPE,
-                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(cmd, shell=False, bufsize=-1, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (output, unused_error) = proc.communicate()
 
         plist = FoundationPlist.readPlistFromString(output)
 
-        return plist["IOConsoleLocked"]
+        console_lock_state = plist["IOConsoleLocked"]
+        screen_lock_state = int(plist["IOConsoleLocked"]) # Set our default result to return if all else fails
+
+        try:
+            # If console locked and root is user and login not done, then assume we're locked at the login screen
+            if console_lock_state and plist["IOConsoleUsers"][0]['kCGSSessionUserNameKey'] == "root" and plist["IOConsoleUsers"][0]['kCGSessionLoginDoneKey'] is False:
+                return 3 # 3 = locked, at login window, return this value and don't check the rest
+        except:
+            pass
+
+        # Check if screen saver is running
+        try:
+            cmd = ['/usr/bin/pgrep', 'ScreenSaverEngine']
+            proc = subprocess.Popen(cmd, shell=False, bufsize=-1, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (output, unused_error) = proc.communicate()
+            screen_saver_process = output.decode("utf-8", errors="ignore")
+
+            if screen_saver_process == "":
+                screen_saver_active = 0
+            else:
+                screen_saver_active = 1
+        except:
+            screen_saver_active = ""
+
+
+        # Check if display is powered off
+        try:
+            # The old 'ioreg -w 0 -c IODisplayWrangler -r IODisplayWrangler' way of checking doesn't work on Apple Silion Macs
+            cmd = ['/usr/sbin/system_profiler', 'SPDisplaysDataType']
+            proc = subprocess.Popen(cmd, shell=False, bufsize=-1, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (output, unused_error) = proc.communicate()
+            display_sys_profile = output.decode("utf-8", errors="ignore")
+
+            if "Display Asleep: Yes" in display_sys_profile:
+                display_off = 1
+            else:
+                display_off = 0
+        except:
+            display_off = ""
+
+        # Screen/console lock logic
+        if console_lock_state is False and screen_saver_active == 1:
+            screen_lock_state = 4 # unlocked, screen saver active
+        elif console_lock_state and screen_saver_active == 1:
+            screen_lock_state = 5 # locked, screen saver active
+
+        elif console_lock_state is False and display_off == 1:
+            screen_lock_state = 6 # unlocked, display off
+        elif console_lock_state and display_off == 1:
+            screen_lock_state = 7 # locked, display off
+
     except:
         return ""
+
+    return screen_lock_state
 
 def main():
     """main"""
@@ -637,11 +705,11 @@ def main():
 
         sp = subprocess.Popen(['/usr/bin/bputil', '--display-policy'], stdout=subprocess.PIPE)
         out, err = sp.communicate()
-        out_value = out.decode()
+        out_value = out.decode("utf-8", errors="ignore")
 
         sp = subprocess.Popen(['/usr/libexec/mdmclient', 'QuerySecurityInfo'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = sp.communicate()
-        out_mdmclient = out.decode()
+        out_mdmclient = out.decode("utf-8", errors="ignore")
 
         result.update({'as_security_mode': as_security_mode_check(out_value)})
         result.update({'as_third_party_kexts': as_third_party_kexts(out_value)})

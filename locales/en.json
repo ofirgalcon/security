@@ -14,6 +14,9 @@
     "gatekeeper": "Gatekeeper Status",
     "gatekeeper_active": "Gatekeeper Active",
     "gatekeeper_disabled": "Gatekeeper Disabled",
+    "locked_login_window": "Yes - Login Window",
+    "locked_screen_saver": "Yes - Screen Saver",
+    "locked_display_off": "Yes - Display Off",
     "medium": "Medium",
     "permissive": "Permissive",
     "off": "Off",
@@ -42,6 +45,8 @@
     "t2_externalboot": "External Boot",
     "third_party_kexts": "3rd Party Kexts",
     "unknown": "Unknown",
+    "unlocked_screen_saver": "No - Screen Saver",
+    "unlocked_display_off": "No - Display Off",
     "unsupported": "Unsupported",
     "user_mdm_control": "User Allowed MDM Control"
 }

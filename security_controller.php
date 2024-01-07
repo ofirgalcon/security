@@ -305,8 +305,13 @@ class Security_controller extends Module_controller
     public function get_screen_locked()
     {
         jsonView(
-            Security_model::selectRaw("COUNT(CASE WHEN `console_session_locked` = 1 THEN 1 END) AS 'Yes'")
-                ->selectRaw("COUNT(CASE WHEN `console_session_locked` = 0 THEN 1 END) AS 'No'")
+            Security_model::selectRaw("COUNT(CASE WHEN `console_session_locked` = 0 THEN 1 END) AS 'No'")
+                ->selectRaw("COUNT(CASE WHEN `console_session_locked` = 1 THEN 1 END) AS 'Yes'")
+                ->selectRaw("COUNT(CASE WHEN `console_session_locked` = 3 THEN 1 END) AS 'Yes-LoginWindow'")
+                ->selectRaw("COUNT(CASE WHEN `console_session_locked` = 4 THEN 1 END) AS 'No-ScreenSaver'")
+                ->selectRaw("COUNT(CASE WHEN `console_session_locked` = 5 THEN 1 END) AS 'Yes-ScreenSaver'")
+                ->selectRaw("COUNT(CASE WHEN `console_session_locked` = 6 THEN 1 END) AS 'No-DisplayOff'")
+                ->selectRaw("COUNT(CASE WHEN `console_session_locked` = 7 THEN 1 END) AS 'Yes-DisplayOff'")
                 ->filter()
                 ->first()
                 ->toLabelCount()

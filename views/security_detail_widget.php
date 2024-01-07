@@ -55,6 +55,21 @@ $(document).on('appReady', function(){
                             .text(i18n.t('security.console_session_locked')))
                         .append($('<td>')
                             .text(function(){
+                                if(item.console_session_locked == '7'){
+                                    return i18n.t('security.locked_display_off');
+                                }
+                                if(item.console_session_locked == '6'){
+                                    return i18n.t('security.unlocked_display_off');
+                                }
+                                if(item.console_session_locked == '5'){
+                                    return i18n.t('security.locked_screen_saver');
+                                }
+                                if(item.console_session_locked == '4'){
+                                    return i18n.t('security.unlocked_screen_saver');
+                                }
+                                if(item.console_session_locked == '3'){
+                                    return i18n.t('security.locked_login_window');
+                                }
                                 if(item.console_session_locked == '1'){
                                     return i18n.t('yes');
                                 }
