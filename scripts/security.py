@@ -7,6 +7,7 @@ import os
 import sys
 import subprocess
 import grp
+import platform
 
 sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
@@ -522,10 +523,24 @@ def firmware_pw_check():
     return firmwarepw
 
 def firewall_enable_check():
-    """Checks to see if firewall is by calling the preference domain.
-    Doing it this way because we want to check if it's enabled via profile"""
 
-    return CFPreferencesCopyAppValue('globalstate', 'com.apple.alf')
+
+    # If less than macOS 15 (Darwin 24), use legacy method to get firewall state
+    if getDarwinVersion() < 24:
+
+        """Checks to see if firewall is by calling the preference domain.
+        Doing it this way because we want to check if it's enabled via profile"""
+
+        return CFPreferencesCopyAppValue('globalstate', 'com.apple.alf')
+
+    else:
+        # Use new method to get firewall state
+        sp = subprocess.Popen(['/usr/libexec/ApplicationFirewall/socketfilterfw', '--getglobalstate'], stdout=subprocess.PIPE)
+        out, err = sp.communicate()
+        if "State = 1" in out.decode("utf-8", errors="ignore"):
+            return 1
+        else:
+            return 0
 
 def skel_state_check():
     """Checks to see if Secure Kernel Extension Loading ("SKEL") is enabled or disabled.
@@ -678,6 +693,11 @@ def get_console_session_state():
         return ""
 
     return screen_lock_state
+
+def getDarwinVersion():
+    """Returns the Darwin version."""
+    darwin_version_tuple = platform.release().split('.')
+    return int(darwin_version_tuple[0])
 
 def main():
     """main"""
